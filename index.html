@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Death Of A Salesman</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!--
+      IMPORTANT:
+      - Keep "__API_KEY__" exactly as-is. entrypoint.sh replaces it on container start.
+      - We set/keep window.process.env so browser code can read the injected value.
+      - This script MUST appear before the module script below.
+    -->
+    <script>
+      // Ensure a process/global env object exists in the browser
+      window.process = window.process || {};
+      window.process.env = window.process.env || {};
+
+      // If nothing has set it yet, add a placeholder that entrypoint.sh will replace.
+      // In Cloud Run, entrypoint.sh runs: sed -i "s#__API_KEY__#$API_KEY#g" dist/index.html
+      // For local dev with Vite, you can override via your own mechanism if needed.
+      window.process.env.API_KEY =
+        window.process.env.API_KEY || "__API_KEY__";
+    </script>
+
+    <!-- Vite entry (dev) — Vite will transform this to hashed assets in /dist on build -->
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
