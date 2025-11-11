@@ -1,4 +1,3 @@
-import React, { useState, FC } from 'react';
 import {
   DndContext,
   closestCenter,
@@ -6,6 +5,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -61,7 +61,7 @@ const SampleParagraphActivity: FC<SampleParagraphActivityProps> = ({ onComplete 
     })
   );
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {

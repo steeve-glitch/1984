@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, useMemo } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { SemanticFieldTerm } from '../types';
 
 interface MatchingGameProps {

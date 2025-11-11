@@ -35,7 +35,6 @@ const questions = [
 const MagicSentenceVerbQuiz: FC<MagicSentenceVerbQuizProps> = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, { verb: string; isCorrect: boolean | null }>>({});
-  const [showSummary, setShowSummary] = useState(false);
 
   const handleVerbSelect = (verb: string) => {
     const isCorrect = verb === questions[currentQuestionIndex].correctVerb;
@@ -58,7 +57,6 @@ const MagicSentenceVerbQuiz: FC<MagicSentenceVerbQuizProps> = ({ onComplete }) =
 
   return (
     <div className="p-4 space-y-6">
-      <h3 className="text-xl font-bold text-center">Magic Sentence: Verb Quiz ({currentQuestionIndex + 1}/{questions.length})</h3>
       <p className="text-lg text-center text-gray-700 dark:text-gray-300">
         Choose the most effective verb to complete the magic sentence.
       </p>
@@ -78,6 +76,7 @@ const MagicSentenceVerbQuiz: FC<MagicSentenceVerbQuizProps> = ({ onComplete }) =
           {question.sentence.split('___')[1]}
         </p>
       </div>
+      <h3 className="text-xl font-bold text-center">Magic Sentence: Verb Quiz ({currentQuestionIndex + 1}/{questions.length})</h3>
       {answer?.isCorrect === true && (
         <div className="p-4 rounded-md bg-green-100 dark:bg-green-900 text-center">
           <p className="font-bold text-green-800 dark:text-green-200">Correct! "{answer.verb}" is a strong, analytical verb.</p>

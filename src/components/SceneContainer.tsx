@@ -54,17 +54,13 @@ const SceneContainer: FC<SceneContainerProps> = ({ scene, onComplete, allCharact
       case 'readingComp':
         return <ReadingCompQuiz questions={scene.readingCompData} onComplete={handleNextActivity} />;
       case 'semanticField':
-        // FIX: Return null after state update to ensure a valid ReactNode is returned.
         if (!semanticField) {
-            handleNextActivity();
-            return null;
+            return <SemanticFieldFallback onSkip={handleNextActivity} />;
         }
         return <SemanticFieldActivity field={semanticField} onComplete={handleNextActivity} />;
       case 'matchingGame':
-        // FIX: Return null after state update to ensure a valid ReactNode is returned.
         if (!semanticField) {
-            handleNextActivity();
-            return null;
+            return <SemanticFieldFallback onSkip={handleNextActivity} />;
         }
         return <MatchingGame terms={semanticField.terms} onComplete={handleNextActivity} />;
       case 'steal':
@@ -102,3 +98,18 @@ const SceneContainer: FC<SceneContainerProps> = ({ scene, onComplete, allCharact
 };
 
 export default SceneContainer;
+
+const SemanticFieldFallback: FC<{ onSkip: () => void }> = ({ onSkip }) => (
+  <div className="flex flex-col items-center text-center space-y-4 py-6">
+    <p className="text-gray-700 dark:text-gray-300">
+      We couldn&apos;t load the vocabulary data for this scene. You can revisit it later once the data is available.
+    </p>
+    <button
+      type="button"
+      onClick={onSkip}
+      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+    >
+      Skip this activity
+    </button>
+  </div>
+);

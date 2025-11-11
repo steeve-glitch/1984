@@ -15,21 +15,12 @@ const Chatbot: FC<ChatbotProps> = ({ context, isOpen, setIsOpen }) => {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
-  const [isAnimating, setIsAnimating] = useState(true);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, [messages, isOpen]);
-
-  useEffect(() => {
-    const animationTimer = setTimeout(() => {
-        setIsAnimating(false);
-    }, 5000); // Animate for 5 seconds
-
-    return () => clearTimeout(animationTimer); // Cleanup on unmount
-  }, []); // Empty dependency array ensures this runs only once on mount
 
   const toggleChat = () => {
     if (isOpen) { // We are closing the chat
@@ -74,7 +65,10 @@ const Chatbot: FC<ChatbotProps> = ({ context, isOpen, setIsOpen }) => {
         >
             {/* Header */}
             <div className="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 rounded-t-lg">
+            <div className="flex items-center gap-2">
+                <img src="/millerBot.png" alt="Mr. Miller Icon" className="h-8 w-8 rounded-full" />
                 <h3 className="font-semibold text-gray-800 dark:text-white">AI Teacher "Mr. Miller"</h3>
+            </div>
                 <button onClick={toggleChat} className="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200" aria-label="Close chat">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

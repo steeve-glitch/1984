@@ -17,13 +17,9 @@ import {
     WRITING_TOPICS,
     MAGIC_SENTENCE_FOCUS_AREAS,
 } from './constants';
-import LockedContent from './components/LockedContent';
 import MobileMenu from './components/MobileMenu';
 
-// --- DEVELOPER TOGGLE ---
-// Set to 'true' to unlock all scenes for easy navigation during development.
-// Set to 'false' to enforce the normal student progression.
-const IS_DEV_MODE = true;
+const UNLOCK_ALL_SCENES = import.meta.env.VITE_UNLOCK_ALL_SCENES === 'true';
 
 const StudentApp: React.FC = () => {
     const [viewMode, setViewMode] = useState<ViewMode>('introduction');
@@ -47,12 +43,13 @@ const StudentApp: React.FC = () => {
     };
 
     useEffect(() => {
+        setIsAnimating(true); // Reset animation state
         const animationTimer = setTimeout(() => {
             setIsAnimating(false);
-        }, 5000); // Animate for 5 seconds
+        }, 2500); // Animate for 2.5 seconds
 
         return () => clearTimeout(animationTimer); // Cleanup on unmount
-    }, []);
+    }, [viewMode]); // Add viewMode to dependency array
 
     const handleSceneComplete = (sceneId: string) => {
         const newCompleted = completedScenes.includes(sceneId) ? completedScenes : [...completedScenes, sceneId];
@@ -78,11 +75,13 @@ const StudentApp: React.FC = () => {
         return (
             <div className="space-y-6">
                 <div className="flex overflow-x-auto space-x-2 p-2 bg-gray-100 dark:bg-gray-900 rounded-lg justify-center">
-                    {ACT1_SCENES.map((scene, index) => (
+                    {ACT1_SCENES.map((scene, index) => {
+                        const isLocked = !UNLOCK_ALL_SCENES && index > 0 && !completedScenes.includes(ACT1_SCENES[index - 1].id);
+                        return (
                         <button 
                             key={scene.id} 
                             onClick={() => setCurrentSceneIndex(index)}
-                            disabled={!IS_DEV_MODE && index > 0 && !completedScenes.includes(ACT1_SCENES[index - 1].id)}
+                            disabled={isLocked}
                             className={`px-4 py-2 text-sm font-medium rounded-md whitespace-nowrap ${
                                 currentSceneIndex === index 
                                     ? 'bg-blue-600 text-white' 
@@ -91,7 +90,8 @@ const StudentApp: React.FC = () => {
                         >
                             Scene {index + 1}
                         </button>
-                    ))}
+                        );
+                    })}
                 </div>
                 <SceneContainer
                     key={ACT1_SCENES[currentSceneIndex].id}
@@ -147,22 +147,22 @@ const StudentApp: React.FC = () => {
                     <div className="fixed bottom-8 right-8 z-40">
                         <button
                             onClick={() => setChatbotIsOpen(true)}
-                            className="relative flex items-center justify-center w-16 h-16"
+                            className="relative flex items-center justify-center w-24 h-24"
                             aria-label="Open AI Assistant"
                         >
                             {isAnimating && (
-                                <span className="absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75 animate-ping"></span>
+                                <span className="absolute inline-flex h-full w-full rounded-full bg-white opacity-75 animate-ping"></span>
                             )}
-                            <span className="relative inline-flex rounded-full h-16 w-16 bg-purple-600 text-white shadow-lg hover:bg-purple-700 items-center justify-center transition-transform hover:scale-110">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm1 2a1 1 0 00-1 1v1h14V7a1 1 0 00-1-1H5zM4 12v2h12v-2H4z" clipRule="evenodd" />
-                                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                                </svg>
+                            <span className="relative inline-flex rounded-full h-24 w-24 items-center justify-center transition-transform hover:scale-110">
+                                <img src="/millerBot.png" alt="Mr. Miller Chatbot" className="h-20 w-20 rounded-full object-cover" />
                             </span>
                         </button>
                     </div>
                 )}
             </div>
+            <footer className="bg-gray-100 dark:bg-gray-800 py-4 text-center text-gray-600 dark:text-gray-400 text-sm">
+                <p>Saint Johns School | English Department | (V2)</p>
+            </footer>
         </div>
     );
 };
