@@ -37,7 +37,7 @@ app.use(express.json({ limit: '1mb' }));
 // Configure CORS
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Allow requests from your frontend
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173', // Allow requests from your frontend
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
