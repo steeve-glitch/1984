@@ -49,9 +49,9 @@ const VocabularyHub: FC<VocabularyHubProps> = ({ semanticFields }) => {
   return (
     <Card title="Vocabulary Hub">
       <div className="p-4 space-y-4">
-        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-          A "semantic field" is a group of words connected by a shared idea or theme. In "Death of a Salesman," Arthur Miller uses specific semantic fields to build the play's atmosphere and reveal character. Explore the fields below to deepen your understanding of the play's language.
-        </p>
+      <p className="text-gray-600 dark:text-gray-300 text-lg mb-8 max-w-3xl mx-auto">
+        A "semantic field" is a group of words connected by a shared idea or theme. In "1984," George Orwell uses specific semantic fields, especially through Newspeak, to build the dystopian atmosphere and limit thought. Explore the fields below to deepen your understanding of the novel's language.
+      </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {semanticFields.map(field => (
             <button

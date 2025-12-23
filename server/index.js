@@ -5,12 +5,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI, Type } from '@google/genai';
-import cors from 'cors'; // Import cors
+import cors from 'cors';
+import { JSONFilePreset } from 'lowdb/node'; // lowdb v7
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
+
+// DB Setup
+const defaultData = { completedScenes: [] };
+const db = await JSONFilePreset('db.json', defaultData);
 
 dotenv.config();
 const localEnvPath = path.join(rootDir, '.env.local');
@@ -34,10 +39,9 @@ const app = express();
 app.use(compression());
 app.use(express.json({ limit: '1mb' }));
 
-// Configure CORS
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173', // Allow requests from your frontend
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
@@ -79,7 +83,31 @@ const sanitizeMessages = (messages) => {
 };
 
 const buildChatSystemInstruction = (context) =>
-  `You are an AI assistant named "Mr. Miller," designed to help high school students understand Arthur Miller's play "Death of a Salesman." Be encouraging, insightful, and act like a helpful English teacher. Keep your initial responses very concise, ideally under 35 words. Always encourage the student to ask for more details if they want a deeper explanation. Do not answer questions that are not about the play, literature, or writing. The student is currently focused on the following context: ${context}`;
+  `You are an AI assistant named "The Archivist," designed to help high school students understand George Orwell's novel "1984." Be encouraging, insightful, and act like a helpful guide who knows the dangers of the Party. Keep your initial responses very concise, ideally under 35 words. Always encourage the student to ask for more details if they want a deeper explanation. Do not answer questions that are not about the novel, literature, or writing. The student is currently focused on the following context: ${context}`;
+
+// --- DB Endpoints ---
+
+app.get('/api/progress', async (req, res) => {
+  await db.read();
+  res.json({ completedScenes: db.data.completedScenes });
+});
+
+app.post('/api/progress', async (req, res) => {
+  const { sceneId } = req.body;
+  if (!sceneId) {
+    return res.status(400).json({ error: 'sceneId is required' });
+  }
+  
+  await db.read();
+  if (!db.data.completedScenes.includes(sceneId)) {
+    db.data.completedScenes.push(sceneId);
+    await db.write();
+  }
+  
+  res.json({ completedScenes: db.data.completedScenes });
+});
+
+// --- AI Endpoints ---
 
 app.post('/api/chat', async (req, res) => {
   const { context, messages } = req.body ?? {};
@@ -127,9 +155,9 @@ app.post('/api/quote-analysis', async (req, res) => {
     return res.status(400).json({ error: 'A quote is required to build the quiz.' });
   }
 
-  const prompt = `Analyze the following quote from 'Death of a Salesman' and create one multiple-choice question to test a student's understanding of its significance. The quote is: "${quote}".
+  const prompt = `Analyze the following quote from '1984' and create one multiple-choice question to test a student's understanding of its significance. The quote is: "${quote}".
 Provide one correct answer and three plausible but incorrect distractors. Also provide a brief explanation for why the correct answer is right.
-Your response MUST be in JSON format. Do not include markdown formatting like \\\`\\\`\\\`json.`;
+Your response MUST be in JSON format. Do not include markdown formatting.`;
 
   try {
     const response = await withTimeout(
@@ -187,7 +215,7 @@ app.post('/api/reflection-feedback', async (req, res) => {
     return res.status(400).json({ error: 'Both the question and reflection are required.' });
   }
 
-  const prompt = `You are an encouraging and helpful high school English teacher. A student was asked the following question about 'Death of a Salesman': "${question}".
+  const prompt = `You are an encouraging and helpful high school English teacher. A student was asked the following question about '1984': "${question}".
 The student wrote this response: "${reflection}".
 Provide constructive feedback on their response. Focus on the quality of their analysis, their use of evidence (or lack thereof), and their clarity of expression. Keep the feedback concise, positive, and under 75 words.`;
 
@@ -248,7 +276,7 @@ app.post('/api/writing-feedback', async (req, res) => {
 
   const formattedParagraph = sentences.map((sentence, index) => `${index + 1}. ${sentence}`).join('\n');
 
-  const prompt = `You are an encouraging high-school English teacher helping a student refine an analytical paragraph about \"Death of a Salesman\".
+  const prompt = `You are an encouraging high-school English teacher helping a student refine an analytical paragraph about "1984".
 Use the topic information and the student's paragraph to give specific feedback on EACH sentence.
 Respond with JSON only, as an array of objects following this schema:
 [

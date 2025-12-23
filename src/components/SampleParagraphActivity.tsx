@@ -21,11 +21,11 @@ interface SampleParagraphActivityProps {
 }
 
 const initialItems = [
-  { id: 'item-2', content: 'After having heard the conversation between the Willy and Linda, the audience is introduced to the two sons; Biff and Happy.' },
-  { id: 'item-4', content: 'This shows how Biff is disillusioned with his life and the expectations of the American Dream.' },
-  { id: 'item-1', content: 'Through the use of dialogue Miller shows how the characters feel about their existence.' },
-  { id: 'item-5', content: 'The author’s choice of words like “measly” effectively conveys a sense of despair and frustration, making the reader question the true cost of the American Dream.' },
-  { id: 'item-3', content: 'While lying in their childhood beds talking about their lives, Biff exclaims that he has a “measly manner of existence.”' },
+  { id: 'item-2', content: 'After having heard the conversation between Winston and Mrs. Parsons, the reader is introduced to the children.' },
+  { id: 'item-4', content: 'This shows how the Party has turned children into spies against their own families.' },
+  { id: 'item-1', content: 'Through the use of dialogue Orwell shows how the characters feel about their oppression.' },
+  { id: 'item-5', content: 'The author’s choice of violent imagery effectively conveys a sense of fear and betrayal, making the reader question the cost of loyalty.' },
+  { id: 'item-3', content: 'While playing in the apartment, the boy yells "Traitor!" at Winston.' },
 ];
 
 const correctOrder = ['item-1', 'item-2', 'item-3', 'item-4', 'item-5'];

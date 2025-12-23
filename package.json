@@ -1,5 +1,5 @@
 {
-  "name": "death-of-a-salesman-companion",
+  "name": "1984-interactive-guide",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -27,6 +27,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "lowdb": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

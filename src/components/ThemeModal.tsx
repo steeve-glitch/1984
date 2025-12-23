@@ -19,21 +19,20 @@ const ThemeModal: FC<ThemeModalProps> = ({ theme, onClose }) => {
       role="dialog"
     >
       <div 
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 m-4 max-w-md w-full relative transform transition-all duration-300 scale-95"
+        className="bg-paper-white dark:bg-gray-800 border-4 border-black dark:border-gray-500 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-8 m-4 max-w-md w-full relative transform transition-all duration-300"
         onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal
-        style={{ transform: 'scale(1)' }}
       >
         <button 
           onClick={onClose} 
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
+          className="absolute top-2 right-2 text-ministry-black hover:text-party-red dark:text-gray-400 dark:hover:text-white"
           aria-label="Close theme details"
         >
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">{theme.name}</h3>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{theme.description}</p>
+        <h3 className="text-3xl font-bold text-ministry-black dark:text-white mb-4 font-propaganda border-b-2 border-party-red pb-2">{theme.name}</h3>
+        <p className="text-gray-700 dark:text-gray-300 font-terminal leading-relaxed">{theme.description}</p>
       </div>
     </div>
   );

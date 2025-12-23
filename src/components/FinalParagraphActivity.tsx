@@ -38,19 +38,19 @@ const FinalParagraphActivity: FC<FinalParagraphActivityProps> = ({ onComplete, e
       <h2 className="text-2xl font-bold text-center">Final Paragraph Exercise</h2>
 
       <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md space-y-3">
-        <h3 className="text-xl font-semibold">Extract from "Death of a Salesman"</h3>
+        <h3 className="text-xl font-semibold">Extract from "1984"</h3>
         <p className="italic text-gray-700 dark:text-gray-300 leading-relaxed">
           "{extract}"
         </p>
         <p className="text-md text-gray-600 dark:text-gray-400">
-          **Instructions:** Read the extract carefully. Identify any literary devices (e.g., metaphor, simile, irony, symbolism, foreshadowing) Arthur Miller uses. Then, write a well-developed analytical paragraph (5-7 sentences) discussing how Miller uses these devices to convey a specific theme or character insight.
+          **Instructions:** Read the extract carefully. Identify any literary devices (e.g., imagery, irony, symbolism, foreshadowing) George Orwell uses. Then, write a well-developed analytical paragraph (5-7 sentences) discussing how Orwell uses these devices to convey a specific theme or character insight.
         </p>
         <p className="text-md text-gray-600 dark:text-gray-400">
           **Clues:**
           <ul>
             <li>Look for figurative language or recurring images.</li>
             <li>Consider the tone and mood of the passage.</li>
-            <li>How does this passage reveal something about Willy's character or the American Dream?</li>
+            <li>How does this passage reveal something about Winston's struggle or the power of the Party?</li>
             <li>Start with a clear topic sentence (your "Magic Sentence").</li>
           </ul>
         </p>
@@ -80,7 +80,7 @@ const FinalParagraphActivity: FC<FinalParagraphActivityProps> = ({ onComplete, e
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <p className="ml-3 text-gray-600 dark:text-gray-300">Mr. Miller is thinking...</p>
+          <p className="ml-3 text-gray-600 dark:text-gray-300">The Archivist is analyzing...</p>
         </div>
       )}
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}

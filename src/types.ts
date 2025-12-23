@@ -1,8 +1,8 @@
-export type ViewMode = 'introduction' | 'character-map' | 'scenes' | 'writing' | 'vocabulary';
+export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'vocabulary' | 'writing' | 'relationship-explorer';
 
 export interface Character {
+  id: string;
   name: string;
-  description: string;
 }
 
 export interface SymbolInfo {

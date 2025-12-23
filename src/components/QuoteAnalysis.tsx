@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FC } from 'react';
 import { generateQuoteAnalysisQuiz } from '../services/geminiService';
 import { QuoteAnalysisQuestion, QuoteAnalysisOption } from '../types';
+import { useChatbot } from '../context/ChatbotContext';
 
 interface QuoteAnalysisProps {
   quotes: string[];
@@ -24,6 +25,8 @@ const QuoteAnalysis: FC<QuoteAnalysisProps> = ({ quotes, onComplete }) => {
   const [error, setError] = useState('');
   const [selectedOption, setSelectedOption] = useState<QuoteAnalysisOption | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
+  
+  const { openChat } = useChatbot();
 
   const currentQuote = quotes[currentQuoteIndex];
 
@@ -140,6 +143,16 @@ const QuoteAnalysis: FC<QuoteAnalysisProps> = ({ quotes, onComplete }) => {
       <blockquote className="p-4 my-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
         <p className="text-xl italic leading-relaxed text-gray-900 dark:text-white">"{currentQuote}"</p>
       </blockquote>
+      <div className="flex justify-end">
+                    <button
+                      onClick={() => openChat(`Can you help me analyze this quote: "${quote}"?`, `The student is analyzing this quote: "${quote}"`)}
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center gap-1 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                      </svg>
+                      Need help? Ask The Archivist about this quote
+                    </button>      </div>
       
       {renderContent()}
     </div>

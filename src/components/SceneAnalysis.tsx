@@ -4,6 +4,7 @@ import CharacterModal from './CharacterModal';
 import SymbolModal from './SymbolModal';
 import HoverInfo from './HoverInfo';
 import { Character, SymbolInfo } from '../types';
+import { useChatbot } from '../context/ChatbotContext';
 
 interface SceneAnalysisProps {
   sceneSummary: string;
@@ -27,6 +28,8 @@ const SceneAnalysis: FC<SceneAnalysisProps> = ({
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [selectedSymbol, setSelectedSymbol] = useState<SymbolInfo | null>(null);
   const [hoverState, setHoverState] = useState<HoverState | null>(null);
+  
+  const { openChat } = useChatbot();
 
   const findCharacter = (word: string) => {
     // Corrected logic: only find exact full name matches.
@@ -106,7 +109,13 @@ const SceneAnalysis: FC<SceneAnalysisProps> = ({
         onClose={() => setSelectedSymbol(null)} 
       />
       
-       <div className="text-center pt-4">
+       <div className="flex justify-center gap-4 pt-4">
+        <button 
+          onClick={() => openChat("Can you help me understand this scene summary?", `The student is reading the summary for this scene: "${sceneSummary}"`)}
+          className="px-6 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
+        >
+          Ask The Archivist about this
+        </button>
         <button onClick={onComplete} className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           Activities
         </button>

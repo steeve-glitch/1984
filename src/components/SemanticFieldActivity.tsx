@@ -17,7 +17,7 @@ const SemanticFieldActivity: FC<SemanticFieldActivityProps> = ({ field, onComple
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">Word / Concept</th>
-              <th scope="col" className="px-6 py-3">Connection to the play</th>
+              <th scope="col" className="px-6 py-3">Connection to the novel</th>
             </tr>
           </thead>
           <tbody>

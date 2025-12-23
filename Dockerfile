@@ -3,6 +3,7 @@ FROM node:20-alpine
 
 WORKDIR /app
 COPY package*.json ./
+COPY scripts/ ./scripts/
 
 # Install dependencies and dos2unix for script compatibility
 RUN npm install && apk add --no-cache dos2unix

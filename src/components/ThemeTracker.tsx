@@ -20,7 +20,7 @@ const ThemeTracker: FC<ThemeTrackerProps> = ({ sceneThemes, allThemes }) => {
   return (
     <div className="border-t border-b border-gray-200 dark:border-gray-700 my-6 py-4">
       <h4 className="text-sm font-semibold uppercase text-gray-500 dark:text-gray-400 mb-3 text-center">
-        Key Themes in this Scene
+        Key Themes in this Chapter
       </h4>
       <div className="flex flex-wrap justify-center gap-2">
         {sceneThemes.map(themeName => (

@@ -11,7 +11,8 @@ interface MobileMenuProps {
 const navItems: { view: ViewMode; label: string }[] = [
     { view: 'introduction', label: 'Introduction' },
     { view: 'character-map', label: 'Character Map' },
-    { view: 'scenes', label: 'Explore The Play' },
+    { view: 'relationship-explorer', label: 'Relationship Explorer' }, // New item
+    { view: 'scenes', label: 'Explore Part 1' },
     { view: 'vocabulary', label: 'Vocabulary Hub' },
     { view: 'writing', label: 'Writing Workshop' },
 ];

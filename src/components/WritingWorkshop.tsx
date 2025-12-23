@@ -20,11 +20,18 @@ import BackButton from './BackButton';
 import FinalParagraphActivity from './FinalParagraphActivity'; // Import FinalParagraphActivity
 import MagicSentenceBuilderActivity from './MagicSentenceBuilderActivity'; // Import the new activity
 
+const orwellExtract = `Winston: Down with Big Brother! Down with Big Brother!
+(He sat back in his chair, slightly ashamed of himself and laid down the pen. The next moment he started violently. There was a knocking at the door.)
+Winston: Who is it?
+(The door opened. It was Mrs. Parsons, the wife of a neighbour on the same floor.)
+Mrs. Parsons: Oh, Comrade Smith. I thought I heard you come in. Do you have a spanner?
+Winston: A spanner? Is it the kitchen sink again?
+Mrs. Parsons: Yes, it's blocked. And Tom isn't home yet.`;
+
 const MAGIC_SENTENCE_DATA = {
   writers: [
-    'The playwright', 'Arthur Miller', 'The author', 'The persona', 'William Shakespeare',
-    'The writer', 'The speaker', 'The novelist', 'The dramatist', 'The screenwriter',
-    'The director', 'The poet', 'George Orwell', 'Tim O’Brien', 'Jane Austen', 'Ray Bradbury'
+    'The playwright', 'George Orwell', 'The author', 'The narrator', 'William Shakespeare',
+    'The poet', 'The novelist', 'The speaker', 'The protagonist', 'The antagonist'
   ],
   verbs: [
     'Uses', 'Chooses', 'Manipulates', 'Takes', 'Employs', 'Utilises', 'Changes', 'Develops',
@@ -68,22 +75,12 @@ const MAGIC_SENTENCE_DATA = {
 };
 
 const exampleParagraph = [
-  'Through the use of dialogue Miller shows how the characters feel about their existence.',
-  'After having heard the conversation between the Willy and Linda, the audience is introduced to the two sons; Biff and Happy.',
-  'While lying in their childhood beds talking about their lives, Biff exclaims that he has a “measly manner of existence.”',
-  'This shows how Biff is disillusioned with his life and the expectations of the American Dream.',
-  'The author’s choice of words like “measly” effectively conveys a sense of despair and frustration, making the reader question the true cost of the American Dream.',
+  'Through the use of dialogue Orwell shows how the characters feel about their existence.',
+  'After having heard the conversation between Winston and Mrs. Parsons, the reader is introduced to the children.',
+  'While playing in the apartment, the boy yells "Traitor!" at Winston.',
+  'This shows how the Party has turned children into spies against their own families.',
+  'The author’s choice of violent imagery effectively conveys a sense of fear and betrayal, making the reader question the cost of loyalty.',
 ];
-
-const willyExtract = `Willy:  It's all right. I came back.
-Linda:  Why? What happened? Did something happen, Willy?
-Willy:  No, nothing happened. You don't have to worry about a thing.
-Linda:  But you're home. Why?
-Willy:  Well, I got as far as a little above Yonkers. I stopped for a minute to feel the air. The car kept going off to the right, a little too much.
-Linda:  Oh. God. Is that all?
-Willy:  It's the steering again. I don't know what to do about it, Linda. I'm not making enough money to pay for it.
-Linda:  Willy, you've got to break your neck to see a salesman today. But it's changing, Willy, I feel it changing.
-Willy:  I hope it is. I need a little hope.`; // Placeholder extract
 
 const WritingWorkshop: FC<WritingWorkshopProps> = ({ writingTopics }) => {
   const [step, setStep] = useState(0);
@@ -106,6 +103,28 @@ const WritingWorkshop: FC<WritingWorkshopProps> = ({ writingTopics }) => {
       setIsLoading(false);
     }
   };
+
+  // Magic Sentence Activity State
+  const [magicSentenceDragItems, setMagicSentenceDragItems] = useState([
+    { id: 'item-1', content: 'Through the use of Newspeak Orwell limits the range of thought available to the citizens.' },
+    { id: 'item-2', content: 'In 1984' },
+    { id: 'item-3', content: 'George Orwell' },
+    { id: 'item-4', content: 'highlights' },
+    { id: 'item-5', content: 'uses' },
+    { id: 'item-6', content: 'the symbol of the telescreen' },
+    { id: 'item-7', content: 'to illustrate' },
+    { id: 'item-8', content: 'the loss of privacy' },
+  ]);
+
+  const [magicSentenceContainer, setMagicSentenceContainer] = useState<string[]>([]);
+  
+  // Sample Paragraph Data (for ordering activity)
+  const initialParagraphSentences = [
+    { id: 's1', content: 'Winston: Down with Big Brother! Down with Big Brother!' },
+    { id: 's2', content: 'Orwell uses repetition here to show Winston\'s uncontrollable release of repressed hatred.' },
+    { id: 's3', content: 'This act of writing is the first step in his inevitable downfall.' },
+    { id: 's4', content: 'The diary itself symbolizes a private space in a world where privacy is extinct.' },
+  ];
 
   const renderStep = () => {
     switch (step) {
@@ -232,7 +251,7 @@ const WritingWorkshop: FC<WritingWorkshopProps> = ({ writingTopics }) => {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <p className="ml-3 text-gray-600 dark:text-gray-300">Mr. Miller is thinking...</p>
+                <p className="ml-3 text-gray-600 dark:text-gray-300">The Archivist is analyzing...</p>
               </div>
             )}
             {error && <p className="text-red-500 text-center mt-4">{error}</p>}

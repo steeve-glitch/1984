@@ -1,19 +1,16 @@
-import React, { useState, useRef, useEffect, FC, FormEvent } from 'react';
-import { ChatMessage } from '../types';
-import { getChatbotResponse } from '../services/geminiService';
+import React, { useRef, useEffect, FC, FormEvent, useState } from 'react';
+import { useChatbot } from '../context/ChatbotContext';
 
-interface ChatbotProps {
-  context: string;
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
+const Chatbot: FC = () => {
+  const { 
+    isOpen, 
+    toggleChat, 
+    messages, 
+    isLoading, 
+    sendMessage 
+  } = useChatbot();
 
-const Chatbot: FC<ChatbotProps> = ({ context, isOpen, setIsOpen }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { sender: 'ai', text: "Hello. I'm Mr. Miller, your AI teacher. How can I assist you with this activity?" }
-  ]);
   const [userInput, setUserInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -22,36 +19,13 @@ const Chatbot: FC<ChatbotProps> = ({ context, isOpen, setIsOpen }) => {
 
   useEffect(scrollToBottom, [messages, isOpen]);
 
-  const toggleChat = () => {
-    if (isOpen) { // We are closing the chat
-      // Reset to initial state for a fresh conversation next time
-      setMessages([
-        { sender: 'ai', text: "Hello. I'm Mr. Miller, your AI teacher. How can I assist you with this activity?" }
-      ]);
-      setUserInput('');
-      setIsLoading(false);
-    }
-    setIsOpen(!isOpen);
-  };
-
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
     if (userInput.trim() === '' || isLoading) return;
 
-    const newMessages: ChatMessage[] = [...messages, { sender: 'user', text: userInput }];
-    setMessages(newMessages);
-    setUserInput('');
-    setIsLoading(true);
-
-    try {
-      const aiResponse = await getChatbotResponse(context, newMessages);
-      setMessages([...newMessages, { sender: 'ai', text: aiResponse }]);
-    } catch (error) {
-      console.error(error);
-      setMessages([...newMessages, { sender: 'ai', text: "Sorry, I'm having trouble connecting right now. Please try again in a moment." }]);
-    } finally {
-      setIsLoading(false);
-    }
+    const text = userInput;
+    setUserInput(''); // Clear immediately
+    await sendMessage(text);
   };
 
   return (
@@ -59,15 +33,15 @@ const Chatbot: FC<ChatbotProps> = ({ context, isOpen, setIsOpen }) => {
       {/* Chat Window */}
       {isOpen && (
         <div
-            className="flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 h-full w-full"
+            className="flex flex-col bg-paper-white dark:bg-gray-800 border-l-2 border-black dark:border-gray-700 h-full w-full shadow-[-4px_0px_0px_0px_rgba(0,0,0,1)]"
             role="dialog"
-            aria-modal="false" // It's not a modal
+            aria-modal="false"
         >
             {/* Header */}
-            <div className="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 rounded-t-lg">
+            <div className="flex justify-between items-center p-4 border-b-2 border-black dark:border-gray-700 bg-ministry-black dark:bg-gray-700">
             <div className="flex items-center gap-2">
-                <img src="/millerBot.png" alt="Mr. Miller Icon" className="h-8 w-8 rounded-full" />
-                <h3 className="font-semibold text-gray-800 dark:text-white">AI Teacher "Mr. Miller"</h3>
+                <img src="/millerBot.png" alt="The Archivist Icon" className="h-8 w-8 rounded-full border-2 border-party-red" />
+                <h3 className="font-semibold text-white font-propaganda tracking-wider">AI Guide "The Archivist"</h3>
             </div>
                 <button onClick={toggleChat} className="text-gray-500 hover:text-gray-800 dark:hover:text-gray-200" aria-label="Close chat">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

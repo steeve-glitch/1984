@@ -2,28 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply text-gray-800 dark:text-gray-200;
-  }
+:root {
+  --crt-line-color: rgba(18, 16, 16, 0.1);
+  --paper-color: #F3F4F6;
 }
 
-@layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-  }
+body {
+  @apply font-terminal bg-paper-white text-ministry-black antialiased overflow-x-hidden;
+}
 
-  .in {
-    animation: popIn 0.5s ease-out forwards;
-  }
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+::-webkit-scrollbar-track {
+  @apply bg-gray-200 dark:bg-gray-800;
+}
 
-  @keyframes popIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-party-red dark:bg-red-900 border-2 border-white dark:border-gray-900;
+}
+
+/* Background Effects Layer */
+.crt-overlay {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 0; /* Behind content */
+  pointer-events: none;
+}
+
+.vignette-overlay {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.3) 100%);
+  z-index: 1; /* Also behind content */
+  pointer-events: none;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-propaganda uppercase tracking-wide;
+}
+
+/* Redacted Text Effect */
+.redacted {
+  @apply bg-black text-black cursor-help transition-colors duration-300;
+}
+
+.redacted:hover {
+  @apply text-white;
+}
+
+/* Custom 'Stamp' utility */
+.stamp {
+  @apply border-4 border-party-red text-party-red font-propaganda uppercase px-2 py-1 transform -rotate-12 inline-block opacity-80;
+  mask-image: url("data:image/svg+xml;utf8,<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.5'/></svg>");
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.dark body {
+  @apply bg-gray-900 text-gray-200;
 }

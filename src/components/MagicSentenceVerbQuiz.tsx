@@ -6,27 +6,27 @@ interface MagicSentenceVerbQuizProps {
 
 const questions = [
   {
-    sentence: 'Through the use of dialogue Miller ___ how the characters feel about their existence.',
-    verbs: ['says', 'shows', 'thinks', 'explains'],
-    correctVerb: 'shows',
+    sentence: 'Through the use of Newspeak Orwell ___ how the citizens are controlled.',
+    verbs: ['says', 'shows', 'thinks', 'illustrates'],
+    correctVerb: 'illustrates',
   },
   {
-    sentence: 'The recurring symbol of the American Dream ___ the unattainable nature of success.',
-    verbs: ['implies', 'tells', 'gives', 'creates'],
-    correctVerb: 'implies',
+    sentence: 'The recurring symbol of the telescreen ___ the total loss of privacy in Oceania.',
+    verbs: ['implies', 'emphasizes', 'gives', 'creates'],
+    correctVerb: 'emphasizes',
   },
   {
-    sentence: 'Willy\'s flashbacks ___ his internal conflict and inability to face reality.',
-    verbs: ['contain', 'feature', 'demonstrate', 'have'],
-    correctVerb: 'demonstrate',
+    sentence: 'Winston\'s diary ___ his internal rebellion and desire for individual expression.',
+    verbs: ['has', 'is', 'symbolizes', 'makes'],
+    correctVerb: 'symbolizes',
   },
   {
-    sentence: 'The setting of the play ___ the claustrophobic and oppressive nature of the Loman family\'s life.',
-    verbs: ['builds', 'makes', 'reinforces', 'does'],
-    correctVerb: 'reinforces',
+    sentence: 'The setting of the novel ___ the claustrophobic and oppressive nature of life under the Party.',
+    verbs: ['builds', 'mirrors', 'has', 'does'],
+    correctVerb: 'mirrors',
   },
   {
-    sentence: 'The character of Ben ___ Willy\'s obsession with the past and his distorted view of success.',
+    sentence: 'The character of Big Brother ___ the Party\'s demand for absolute loyalty and worship.',
     verbs: ['personifies', 'shows', 'is', 'has'],
     correctVerb: 'personifies',
   },

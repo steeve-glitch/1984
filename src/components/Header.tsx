@@ -9,18 +9,29 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ onMenuClick, theme, toggleTheme }) => {
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-20">
+    <header className="bg-ministry-black border-b-4 border-party-red sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex-grow text-center">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Death of a Salesman: An Interactive Guide</h1>
+        <div className="flex justify-between items-center h-20">
+          <div className="flex-shrink-0 flex items-center gap-3">
+             <div className="bg-party-red text-white font-propaganda font-bold text-3xl px-3 py-1 -rotate-6 shadow-md border-2 border-white">
+                1984
+             </div>
+             <div className="hidden sm:block border-l-2 border-gray-600 h-10 mx-4"></div>
+             <h1 className="hidden sm:block text-xl font-terminal tracking-widest text-white uppercase">
+                Interactive Study Guide
+             </h1>
           </div>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center">
+
+          <div className="flex items-center gap-4">
+             <div className="hidden md:flex flex-col items-end mr-4">
+                <span className="text-xs text-gray-400 font-terminal uppercase tracking-widest">Airstrip One</span>
+                <span className="text-xs text-party-red font-bold font-terminal uppercase tracking-widest animate-pulse">Connection Secure</span>
+             </div>
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <div className="lg:hidden ml-2">
               <button
                 onClick={onMenuClick}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                className="inline-flex items-center justify-center p-2 rounded-none bg-party-red text-white hover:bg-red-700 focus:outline-none ring-2 ring-black"
                 aria-label="Open main menu"
                 aria-expanded="false"
               >
