@@ -6,6 +6,7 @@ import {
   SemanticField,
   Theme,
   SymbolInfo,
+  DoublethinkGameData,
 } from './types';
 
 export const APP_TITLE = "1984: The Interactive Guide";
@@ -772,3 +773,239 @@ export const MAGIC_SENTENCE_FOCUS_AREAS: MagicSentenceFocusArea[] = [
     ],
   }
 ];
+
+// Scene filters for Part 1 and Part 2
+export const PART1_SCENES = SCENES.filter(s => s.id.startsWith('part1-'));
+export const PART2_SCENES = SCENES.filter(s => s.id.startsWith('part2-'));
+
+// Doublethink Mini-Game Data
+export const DOUBLETHINK_GAME_DATA: DoublethinkGameData = {
+  passingScore: 70,
+  rounds: [
+    {
+      title: 'Identify the Contradiction',
+      instructions: 'The Party demands you practice DOUBLETHINK. Select the two contradictory concepts in each slogan.',
+      timeLimit: 30,
+      questions: [
+        {
+          id: 'r1-1',
+          type: 'contradiction',
+          prompt: 'WAR IS PEACE',
+          options: [
+            { text: 'War and Peace', isCorrect: true },
+            { text: 'War and Victory', isCorrect: false, feedback: 'Victory is a result, not the contradiction.' },
+            { text: 'Peace and Love', isCorrect: false, feedback: 'Love is not mentioned in this slogan.' },
+            { text: 'Battle and Conflict', isCorrect: false, feedback: 'These are synonyms, not contradictions.' },
+          ],
+          explanation: 'The Party claims perpetual war brings stability (peace) to Oceania by uniting citizens against a common enemy.'
+        },
+        {
+          id: 'r1-2',
+          type: 'contradiction',
+          prompt: 'FREEDOM IS SLAVERY',
+          options: [
+            { text: 'Freedom and Slavery', isCorrect: true },
+            { text: 'Freedom and Choice', isCorrect: false, feedback: 'Choice is related to freedom, not its opposite.' },
+            { text: 'Liberty and Rights', isCorrect: false, feedback: 'These are synonyms, not contradictions.' },
+            { text: 'Slavery and Work', isCorrect: false, feedback: 'Work is not the same as slavery.' },
+          ],
+          explanation: 'The Party teaches that individual freedom leads to chaos and suffering, while submission to Big Brother brings security.'
+        },
+        {
+          id: 'r1-3',
+          type: 'contradiction',
+          prompt: 'IGNORANCE IS STRENGTH',
+          options: [
+            { text: 'Ignorance and Strength', isCorrect: true },
+            { text: 'Knowledge and Power', isCorrect: false, feedback: 'These concepts are not in the slogan.' },
+            { text: 'Weakness and Strength', isCorrect: false, feedback: 'Weakness is not mentioned.' },
+            { text: 'Ignorance and Stupidity', isCorrect: false, feedback: 'These are similar, not contradictory.' },
+          ],
+          explanation: 'The Party teaches that not questioning authority makes the collective stronger. Individual knowledge is dangerous.'
+        },
+        {
+          id: 'r1-4',
+          type: 'contradiction',
+          prompt: '2 + 2 = 5',
+          options: [
+            { text: 'Mathematical truth and Party truth', isCorrect: true },
+            { text: 'Numbers and Letters', isCorrect: false, feedback: 'This is not about letters.' },
+            { text: 'Addition and Subtraction', isCorrect: false, feedback: 'Both are mathematical operations.' },
+            { text: 'Five and Four', isCorrect: false, feedback: 'Close, but the real contradiction is truth itself.' },
+          ],
+          explanation: 'If the Party says 2+2=5, you must believe it. Reality is whatever the Party declares it to be.'
+        },
+        {
+          id: 'r1-5',
+          type: 'contradiction',
+          prompt: 'THE PARTY IS NEVER WRONG',
+          options: [
+            { text: 'Infallibility and Human nature', isCorrect: true },
+            { text: 'Party and Government', isCorrect: false, feedback: 'These are related concepts.' },
+            { text: 'Right and Left', isCorrect: false, feedback: 'Political directions are not the point.' },
+            { text: 'Wrong and Incorrect', isCorrect: false, feedback: 'These are synonyms.' },
+          ],
+          explanation: 'No human institution can be infallible, yet the Party demands belief in its perfection. This requires doublethink.'
+        },
+      ]
+    },
+    {
+      title: 'Complete the Slogan',
+      instructions: 'Demonstrate your orthodoxy by completing the Party slogans correctly.',
+      timeLimit: 45,
+      questions: [
+        {
+          id: 'r2-1',
+          type: 'complete',
+          prompt: 'WAR IS ___',
+          options: [
+            { text: 'PEACE', isCorrect: true },
+            { text: 'HELL', isCorrect: false, feedback: 'This is oldthink. The Party has redefined war.' },
+            { text: 'NECESSARY', isCorrect: false, feedback: 'Too logical. The Party speaks in contradictions.' },
+            { text: 'VICTORY', isCorrect: false, feedback: 'Victory is a goal, not what war IS.' },
+          ],
+          explanation: 'WAR IS PEACE - perpetual war keeps the population united and controlled.'
+        },
+        {
+          id: 'r2-2',
+          type: 'complete',
+          prompt: 'FREEDOM IS ___',
+          options: [
+            { text: 'SLAVERY', isCorrect: true },
+            { text: 'DANGEROUS', isCorrect: false, feedback: 'The Party is more absolute than this.' },
+            { text: 'FORBIDDEN', isCorrect: false, feedback: 'Too direct. The Party redefines, not forbids.' },
+            { text: 'WEAKNESS', isCorrect: false, feedback: 'Close, but not the official slogan.' },
+          ],
+          explanation: 'FREEDOM IS SLAVERY - individual freedom leads to chaos; only Big Brother provides security.'
+        },
+        {
+          id: 'r2-3',
+          type: 'complete',
+          prompt: 'IGNORANCE IS ___',
+          options: [
+            { text: 'STRENGTH', isCorrect: true },
+            { text: 'BLISS', isCorrect: false, feedback: 'This is an oldspeak saying. The Party uses STRENGTH.' },
+            { text: 'POWER', isCorrect: false, feedback: 'Power belongs to the Party, not to ignorance.' },
+            { text: 'REQUIRED', isCorrect: false, feedback: 'Too weak. The Party makes stronger claims.' },
+          ],
+          explanation: 'IGNORANCE IS STRENGTH - not knowing protects you from thoughtcrime and strengthens the collective.'
+        },
+        {
+          id: 'r2-4',
+          type: 'complete',
+          prompt: 'BIG BROTHER IS ___',
+          options: [
+            { text: 'WATCHING YOU', isCorrect: true },
+            { text: 'PROTECTING YOU', isCorrect: false, feedback: 'The Party prefers surveillance to protection.' },
+            { text: 'LOVING YOU', isCorrect: false, feedback: 'Love is demanded OF you, not given TO you.' },
+            { text: 'ALWAYS RIGHT', isCorrect: false, feedback: 'True, but not the famous slogan.' },
+          ],
+          explanation: 'BIG BROTHER IS WATCHING YOU - the constant reminder of surveillance that controls behavior.'
+        },
+        {
+          id: 'r2-5',
+          type: 'complete',
+          prompt: 'WHO CONTROLS THE PAST CONTROLS THE ___',
+          options: [
+            { text: 'FUTURE', isCorrect: true },
+            { text: 'PRESENT', isCorrect: false, feedback: 'The next line says "who controls the present controls the past."' },
+            { text: 'PEOPLE', isCorrect: false, feedback: 'Too direct. The Party thinks in terms of time.' },
+            { text: 'TRUTH', isCorrect: false, feedback: 'Truth is controlled, but FUTURE is the answer.' },
+          ],
+          explanation: 'Who controls the past controls the future; who controls the present controls the past.'
+        },
+        {
+          id: 'r2-6',
+          type: 'complete',
+          prompt: 'DOUBLETHINK MEANS THE POWER OF HOLDING TWO ___ BELIEFS SIMULTANEOUSLY',
+          options: [
+            { text: 'CONTRADICTORY', isCorrect: true },
+            { text: 'DIFFERENT', isCorrect: false, feedback: 'Too weak. The beliefs must CONTRADICT.' },
+            { text: 'POLITICAL', isCorrect: false, feedback: 'It is not limited to political beliefs.' },
+            { text: 'ORTHODOX', isCorrect: false, feedback: 'Orthodox beliefs would not conflict.' },
+          ],
+          explanation: 'Doublethink is the core skill of Party members: believing contradictions simultaneously and genuinely.'
+        },
+      ]
+    },
+    {
+      title: 'Orthodox Response',
+      instructions: 'The Thought Police are watching. Select the ORTHODOX response that demonstrates proper doublethink.',
+      timeLimit: 60,
+      questions: [
+        {
+          id: 'r3-1',
+          type: 'orthodox',
+          prompt: 'The Ministry announces the chocolate ration has been INCREASED to 20 grams. You clearly remember it was 30 grams last week. The orthodox response is:',
+          options: [
+            { text: 'Celebrate Big Brother\'s generosity for the increase', isCorrect: true },
+            { text: 'Point out the mathematical error quietly', isCorrect: false, feedback: 'THOUGHTCRIME. You must not notice contradictions.' },
+            { text: 'Stay silent and feel confused', isCorrect: false, feedback: 'FACECRIME. Confusion shows incomplete doublethink.' },
+            { text: 'Ask a colleague if they remember differently', isCorrect: false, feedback: 'THOUGHTCRIME. You are spreading doubt.' },
+          ],
+          explanation: 'Proper doublethink means genuinely believing the ration increased, while also knowing it decreased, while also not knowing you know.'
+        },
+        {
+          id: 'r3-2',
+          type: 'orthodox',
+          prompt: 'Yesterday Oceania was at war with Eurasia. Today the telescreen announces we have ALWAYS been at war with Eastasia. You must:',
+          options: [
+            { text: 'Know we have always been at war with Eastasia and believe it completely', isCorrect: true },
+            { text: 'Pretend to believe while remembering the truth privately', isCorrect: false, feedback: 'INSUFFICIENT. The Party requires genuine belief, not performance.' },
+            { text: 'Report your confusion to the Thought Police', isCorrect: false, feedback: 'THOUGHTCRIME. You should not be confused.' },
+            { text: 'Destroy any evidence of the previous war', isCorrect: false, feedback: 'Unnecessary. The evidence already never existed.' },
+          ],
+          explanation: 'The past is mutable. Whatever the Party says IS the truth. Your memory must reshape itself instantly.'
+        },
+        {
+          id: 'r3-3',
+          type: 'orthodox',
+          prompt: 'During Two Minutes Hate, you feel genuine rage at Emmanuel Goldstein. But you also notice he makes logical points. The orthodox response is:',
+          options: [
+            { text: 'Hate him MORE because his logic makes him more dangerous', isCorrect: true },
+            { text: 'Report yourself for noticing his logic', isCorrect: false, feedback: 'This draws attention to your thoughtcrime.' },
+            { text: 'Suppress the thought and scream louder', isCorrect: false, feedback: 'Suppression is not doublethink. You must genuinely not think it.' },
+            { text: 'Discuss his points with a trusted colleague later', isCorrect: false, feedback: 'There are no trusted colleagues. All would report you.' },
+          ],
+          explanation: 'Goldstein\'s intelligence is precisely why he is dangerous. Your hatred should increase with his apparent logic.'
+        },
+        {
+          id: 'r3-4',
+          type: 'orthodox',
+          prompt: 'You see a colleague arrested by the Thought Police. Yesterday he was a hero of the Party. Today he is an unperson. You must:',
+          options: [
+            { text: 'Immediately forget he ever existed', isCorrect: true },
+            { text: 'Wonder what crime he committed', isCorrect: false, feedback: 'THOUGHTCRIME. Unpersons never existed. There is no crime to wonder about.' },
+            { text: 'Feel relief that you were not his friend', isCorrect: false, feedback: 'You cannot feel relief about someone who never existed.' },
+            { text: 'Remove his name from any documents you control', isCorrect: false, feedback: 'His name was never there. You are imagining things.' },
+          ],
+          explanation: 'An unperson has been vaporized from existence. They never existed. You cannot forget what was never there.'
+        },
+        {
+          id: 'r3-5',
+          type: 'orthodox',
+          prompt: 'You wake up and think "I hate Big Brother." Before you can stop it, the thought has occurred. What is the orthodox response?',
+          options: [
+            { text: 'Use crimestop to halt the thought and love Big Brother completely', isCorrect: true },
+            { text: 'Report yourself to the Thought Police immediately', isCorrect: false, feedback: 'This confirms the thoughtcrime occurred. Better to crimestop.' },
+            { text: 'Punish yourself through extra voluntary work', isCorrect: false, feedback: 'This acknowledges the thought happened.' },
+            { text: 'Tell yourself it was just a dream', isCorrect: false, feedback: 'Dreams are also monitored. This is not a solution.' },
+          ],
+          explanation: 'CRIMESTOP is the faculty of stopping short at the threshold of dangerous thoughts. The thought must cease to exist.'
+        },
+        {
+          id: 'r3-6',
+          type: 'orthodox',
+          prompt: 'The Party announces that Oceania has ALWAYS produced more steel than last year. But factories are closing. The orthodox response is:',
+          options: [
+            { text: 'Production figures are increasing. The factories never existed.', isCorrect: true },
+            { text: 'The statistics must be measuring something different', isCorrect: false, feedback: 'THOUGHTCRIME. You are questioning the Party\'s figures.' },
+            { text: 'Focus on your own work and ignore the contradiction', isCorrect: false, feedback: 'There IS no contradiction to ignore.' },
+            { text: 'Assume the factories are being upgraded', isCorrect: false, feedback: 'You are creating explanations. The Party needs none.' },
+          ],
+          explanation: 'Reality is what the Party says it is. Closed factories do not contradict increased production—they simply do not exist.'
+        },
+      ]
+    }
+  ]
+};

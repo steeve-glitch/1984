@@ -14,7 +14,7 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 
 // DB Setup
-const defaultData = { completedScenes: [] };
+const defaultData = { completedScenes: [], doublethinkCompleted: false };
 const db = await JSONFilePreset('db.json', defaultData);
 
 dotenv.config();
@@ -89,7 +89,10 @@ const buildChatSystemInstruction = (context) =>
 
 app.get('/api/progress', async (req, res) => {
   await db.read();
-  res.json({ completedScenes: db.data.completedScenes });
+  res.json({
+    completedScenes: db.data.completedScenes,
+    doublethinkCompleted: db.data.doublethinkCompleted || false
+  });
 });
 
 app.post('/api/progress', async (req, res) => {
@@ -97,14 +100,29 @@ app.post('/api/progress', async (req, res) => {
   if (!sceneId) {
     return res.status(400).json({ error: 'sceneId is required' });
   }
-  
+
   await db.read();
   if (!db.data.completedScenes.includes(sceneId)) {
     db.data.completedScenes.push(sceneId);
     await db.write();
   }
-  
+
   res.json({ completedScenes: db.data.completedScenes });
+});
+
+app.post('/api/doublethink-complete', async (req, res) => {
+  await db.read();
+  db.data.doublethinkCompleted = true;
+  await db.write();
+  res.json({ doublethinkCompleted: true });
+});
+
+app.post('/api/reset-progress', async (req, res) => {
+  await db.read();
+  db.data.completedScenes = [];
+  db.data.doublethinkCompleted = false;
+  await db.write();
+  res.json({ completedScenes: [], doublethinkCompleted: false });
 });
 
 // --- AI Endpoints ---

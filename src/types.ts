@@ -1,4 +1,4 @@
-export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'vocabulary' | 'writing' | 'relationship-explorer';
+export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'scenes-part1' | 'scenes-part2' | 'doublethink-game' | 'vocabulary' | 'writing' | 'relationship-explorer';
 
 export interface Character {
   id: string;
@@ -158,4 +158,30 @@ export interface MagicSentenceFocusArea {
 export interface Page {
   id: string;
   title: string;
+}
+
+export interface DoublethinkOption {
+  text: string;
+  isCorrect: boolean;
+  feedback?: string;
+}
+
+export interface DoublethinkQuestion {
+  id: string;
+  type: 'contradiction' | 'complete' | 'orthodox';
+  prompt: string;
+  options: DoublethinkOption[];
+  explanation: string;
+}
+
+export interface DoublethinkRound {
+  title: string;
+  instructions: string;
+  timeLimit: number;
+  questions: DoublethinkQuestion[];
+}
+
+export interface DoublethinkGameData {
+  rounds: DoublethinkRound[];
+  passingScore: number;
 }
