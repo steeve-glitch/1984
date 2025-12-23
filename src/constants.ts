@@ -72,6 +72,42 @@ export const SEMANTIC_FIELDS: SemanticField[] = [
         { word: 'listening', definition: 'Give attention to sound.', connection: 'Even in the countryside, microphones might be listening.' },
         { word: 'police patrol', definition: 'Helicopters that snoop into windows.', connection: 'A physical reminder of the state\'s constant vigilance.' },
     ],
+  },
+  {
+    id: 4,
+    title: 'Love & Rebellion',
+    description: "The vocabulary of forbidden human connection and private resistance against the Party.",
+    terms: [
+      { word: 'desire', definition: 'A strong feeling of wanting something or wishing for something to happen.', connection: "Personal desire—for love, pleasure, or freedom—is the ultimate act of rebellion against the Party's control." },
+      { word: 'corrupt', definition: 'Morally contaminated; to cause to act dishonestly.', connection: "Julia describes herself as 'corrupt to the bones,' meaning she embraces natural human impulses the Party forbids." },
+      { word: 'private', definition: 'Belonging to or for the use of one particular person; not public.', connection: "Privacy is the first casualty of totalitarianism; Winston and Julia's room represents stolen privacy." },
+      { word: 'instinct', definition: 'An innate pattern of behavior; a natural impulse.', connection: "The Party seeks to destroy instinct and replace it with orthodoxy; Julia's rebellion is instinctive." },
+      { word: 'saccharine', definition: 'A synthetic sweetener; excessively sweet or sentimental.', connection: "The saccharine tablets Winston uses represent the synthetic, joyless substitutes the Party provides." },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Conspiracy & The Brotherhood',
+    description: "Language associated with underground resistance and secret organizations.",
+    terms: [
+      { word: 'conspiracy', definition: 'A secret plan by a group to do something unlawful or harmful.', connection: "The Brotherhood represents the hope of organized resistance, whether real or fabricated by the Party." },
+      { word: 'rendezvous', definition: 'A meeting at an agreed time and place.', connection: "Winston and Julia's secret meetings require elaborate planning to avoid detection." },
+      { word: 'oligarchy', definition: 'A small group of people having control of a country or organization.', connection: "Goldstein's book reveals that the Party is an oligarchy seeking power for its own sake." },
+      { word: 'heresy', definition: 'Belief or opinion contrary to orthodox doctrine.', connection: "Joining the Brotherhood is the ultimate heresy against the Party's absolute authority." },
+      { word: 'martyr', definition: 'A person who suffers death for refusing to renounce a belief.', connection: "Winston accepts that he may become a martyr for the cause of truth." },
+    ],
+  },
+  {
+    id: 6,
+    title: 'Hope & Despair',
+    description: "The emotional vocabulary of resistance and the human spirit under totalitarianism.",
+    terms: [
+      { word: 'futile', definition: 'Incapable of producing any useful result; pointless.', connection: "Winston knows his rebellion is futile but persists anyway—an act of defiance." },
+      { word: 'sanity', definition: 'The ability to think and behave normally; soundness of mind.', connection: "Winston's greatest fear is losing his sanity; holding onto truth preserves it." },
+      { word: 'proles', definition: 'Short for proletarians; the working class in Oceania.', connection: "Winston believes 'If there is hope, it lies in the proles'—the 85% who remain uncontrolled." },
+      { word: 'unalterable', definition: 'Not able to be changed.', connection: "Winston seeks something unalterable—a truth the Party cannot destroy." },
+      { word: 'posterity', definition: 'All future generations of people.', connection: "Winston writes his diary for posterity, hoping the truth will survive." },
+    ],
   }
 ];
 
@@ -260,6 +296,417 @@ export const SCENES: Scene[] = [
         options: ['Newspeak', 'Words', 'Books']
     },
     reflectionPrompt: "How does language shape the way we think? If we lose the words to describe an idea (like 'freedom'), do we lose the idea itself?"
+  },
+  // ==================== PART TWO ====================
+  {
+    id: 'part2-chapter1',
+    title: 'Chapter 1: The Note',
+    summary: "In the corridor of the Ministry, the dark-haired girl (Julia) stumbles and falls near Winston. As he helps her up, she secretly passes him a folded note. With trembling hands, Winston later reads three words: 'I love you.' His terror transforms into wild hope. He spends days trying to find a way to meet her privately, eventually managing to sit next to her in the canteen where they whisper plans for a secret rendezvous.",
+    themes: ['Love vs. Betrayal', 'Psychological Manipulation'],
+    semanticFieldId: 4, // Love & Rebellion
+    stealData: {
+      characters: [
+        { character: 'Winston Smith', categories: [
+          { category: 'Feelings', sentence: "Winston's first reaction to the note is not joy but ___ that it might be a trap.", answer: 'Terror' },
+          { category: 'Actions', sentence: "He waits ___ days before he can safely read the note at his desk.", answer: 'Five' },
+        ]},
+        { character: 'Julia', categories: [
+          { category: 'Actions', sentence: "Julia passes the note by pretending to ___ in the corridor.", answer: 'Fall' },
+          { category: 'Speech', sentence: "Her note contains only ___ words that change everything.", answer: 'Three' },
+        ]}
+      ],
+      options: ['Terror', 'Five', 'Fall', 'Three', 'Joy', 'Run']
+    },
+    readingCompData: [
+      {
+        question: "What does Julia's note say?",
+        options: [
+          { text: "'Meet me tonight.'", isCorrect: false, feedback: "The message is more personal than logistical." },
+          { text: "'I love you.'", isCorrect: true },
+          { text: "'I know about the Brotherhood.'", isCorrect: false, feedback: "Julia doesn't mention the Brotherhood yet." },
+          { text: "'You are being watched.'", isCorrect: false, feedback: "This would be a warning, not a declaration." },
+        ],
+        explanation: "Julia's note simply says 'I love you'—three words that represent the ultimate thoughtcrime of personal attachment."
+      }
+    ],
+    quote: "At the sight of the words I love you the desire to stay alive had welled up in him.",
+    gameData: {
+      prompts: [
+        { text: "What Julia pretends to do in the corridor.", answer: 'Fall' },
+        { text: "The number of words in Julia's note.", answer: 'Three' },
+      ],
+      options: ['Fall', 'Three', 'Faint', 'Five']
+    },
+    reflectionPrompt: "Why does Winston initially react with terror rather than joy to Julia's declaration of love? What does this reveal about the psychological damage caused by living under totalitarianism?"
+  },
+  {
+    id: 'part2-chapter2',
+    title: 'Chapter 2: The Countryside',
+    summary: "Winston and Julia finally meet in a secret clearing in the countryside—a place remarkably like Winston's dream of the 'Golden Country.' Julia is bold and experienced; she has had many affairs with Party members. She sees her promiscuity as a form of rebellion. They make love among the bluebells, and Winston feels that in this act of desire, they are striking a blow against the Party. Julia's corruption is political: every act of pleasure is an attack on Big Brother.",
+    themes: ['Love vs. Betrayal', 'Totalitarianism'],
+    semanticFieldId: 4, // Love & Rebellion
+    stealData: {
+      characters: [
+        { character: 'Julia', categories: [
+          { category: 'Speech', sentence: "Julia tells Winston she is 'corrupt to the ___.'", answer: 'Bones' },
+          { category: 'Thoughts', sentence: "She sees sexual rebellion as a political act that strikes at the Party's ___.", answer: 'Power' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Feelings', sentence: "Winston realizes this countryside is identical to his dream of the '___.'", answer: 'Golden Country' },
+          { category: 'Thoughts', sentence: "He sees Julia's promiscuity not as shameful but as ___.", answer: 'Rebellion' },
+        ]}
+      ],
+      options: ['Bones', 'Power', 'Golden Country', 'Rebellion', 'Heart', 'Shame']
+    },
+    readingCompData: [
+      {
+        question: "Why does Julia consider her affairs with Party members to be political acts?",
+        options: [
+          { text: "She is gathering intelligence for the Brotherhood.", isCorrect: false, feedback: "Julia is not a spy." },
+          { text: "Every act of desire undermines the Party's control over the body.", isCorrect: true },
+          { text: "She hopes to blackmail Inner Party members.", isCorrect: false, feedback: "Julia's motives aren't strategic in this way." },
+          { text: "She wants to spread disease among the Party.", isCorrect: false, feedback: "This is not her intention." },
+        ],
+        explanation: "Julia understands that the Party wants to control all human instincts, including sexual desire. By following her natural impulses, she commits an act of rebellion against the Party's claim to total control."
+      }
+    ],
+    quote: "I hate purity. I hate goodness. I don't want any virtue to exist anywhere. I want everyone to be corrupt to the bones.",
+    gameData: {
+      prompts: [
+        { text: "The dreamlike place where Winston and Julia meet.", answer: 'Golden Country' },
+        { text: "The flowers growing in the clearing.", answer: 'Bluebells' },
+      ],
+      options: ['Golden Country', 'Bluebells', 'Victory Square', 'Roses']
+    },
+    reflectionPrompt: "Julia declares she wants 'everyone to be corrupt to the bones.' How is her definition of 'corruption' different from the Party's? Is her philosophy liberating or dangerous?"
+  },
+  {
+    id: 'part2-chapter3',
+    title: "Chapter 3: Julia's Story",
+    summary: "Winston and Julia continue meeting in secret locations. Julia reveals her pragmatic philosophy: she cares nothing for abstract political rebellion but simply wants to enjoy life. She sleeps during the Two Minutes Hate, works in the Fiction Department producing pornography for the proles, and has learned to survive by being outwardly orthodox. Unlike Winston, she accepts the Party's lies as unchangeable and focuses only on private pleasures.",
+    themes: ['Psychological Manipulation', 'Totalitarianism'],
+    semanticFieldId: 4, // Love & Rebellion
+    stealData: {
+      characters: [
+        { character: 'Julia', categories: [
+          { category: 'Actions', sentence: "Julia secretly ___ during the Two Minutes Hate.", answer: 'Sleeps' },
+          { category: 'Thoughts', sentence: "She believes all Party talk about war and ideology is simply '___.'", answer: 'Rubbish' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Thoughts', sentence: "Winston is frustrated that Julia doesn't care about ___ truth.", answer: 'Historical' },
+          { category: 'Feelings', sentence: "Despite their differences, he feels their shared ___ unites them.", answer: 'Hatred' },
+        ]}
+      ],
+      options: ['Sleeps', 'Rubbish', 'Historical', 'Hatred', 'Screams', 'Love']
+    },
+    readingCompData: [
+      {
+        question: "What does Julia produce in the Fiction Department?",
+        options: [
+          { text: "Novels approved by the Ministry of Truth.", isCorrect: false, feedback: "She works on more specific content." },
+          { text: "Cheap pornography for the proles.", isCorrect: true },
+          { text: "Propaganda posters featuring Big Brother.", isCorrect: false, feedback: "That's a different department." },
+          { text: "Children's textbooks.", isCorrect: false, feedback: "She works in a different section." },
+        ],
+        explanation: "Julia works on machines that produce pornographic novels for the proles—content considered beneath Party members but used to pacify the masses. The irony is that she must appear puritanical while producing this material."
+      }
+    ],
+    quote: "Life as she saw it was quite simple. You wanted a good time; 'they,' meaning the Party, wanted to stop you having it.",
+    gameData: {
+      prompts: [
+        { text: "What Julia does during the Two Minutes Hate.", answer: 'Sleeps' },
+        { text: "The department where Julia works.", answer: 'Fiction Department' },
+      ],
+      options: ['Sleeps', 'Fiction Department', 'Screams', 'Records Department']
+    },
+    reflectionPrompt: "Winston rebels because he cares about truth; Julia rebels because she wants pleasure. Which form of resistance is more effective against a totalitarian state? Which is more dangerous to the individual?"
+  },
+  {
+    id: 'part2-chapter4',
+    title: 'Chapter 4: The Room Above the Shop',
+    summary: "Winston rents the room above Mr. Charrington's junk shop—the same shop where he bought his diary. The room has no telescreen, only an old-fashioned picture of a church (St Clement's Dane). It becomes Winston and Julia's private sanctuary. Julia brings real coffee, sugar, and makeup—luxuries from the Inner Party black market. For the first time, they have a place that feels truly private, a pocket of the past untouched by the Party.",
+    themes: ['Love vs. Betrayal', 'Control of Information'],
+    semanticFieldId: 4, // Love & Rebellion
+    stealData: {
+      characters: [
+        { character: 'Winston Smith', categories: [
+          { category: 'Actions', sentence: "Winston rents the room because it has no ___.", answer: 'Telescreen' },
+          { category: 'Feelings', sentence: "The room represents a stolen piece of ___ from the Party.", answer: 'Privacy' },
+        ]},
+        { character: 'Julia', categories: [
+          { category: 'Actions', sentence: "Julia brings forbidden luxuries like real ___ and makeup.", answer: 'Coffee' },
+          { category: 'Effects', sentence: "With makeup on, she transforms from a Party member into a ___.", answer: 'Woman' },
+        ]}
+      ],
+      options: ['Telescreen', 'Privacy', 'Coffee', 'Woman', 'Radio', 'Time']
+    },
+    readingCompData: [
+      {
+        question: "What makes the room above the shop seem safe to Winston?",
+        options: [
+          { text: "Mr. Charrington promises to protect them.", isCorrect: false, feedback: "Winston doesn't rely on Charrington's promises." },
+          { text: "There is no telescreen in the room.", isCorrect: true },
+          { text: "The Thought Police never patrol this area.", isCorrect: false, feedback: "Winston has no such guarantee." },
+          { text: "Julia has bribed the landlord.", isCorrect: false, feedback: "No bribery is involved." },
+        ],
+        explanation: "The room's most significant feature is the absence of a telescreen, making it the only place Winston knows where he isn't being constantly watched and listened to."
+      }
+    ],
+    quote: "It was as though they were intentionally stepping nearer to their graves.",
+    gameData: {
+      prompts: [
+        { text: "The device notably absent from the room.", answer: 'Telescreen' },
+        { text: "The old man who runs the junk shop.", answer: 'Mr. Charrington' },
+      ],
+      options: ['Telescreen', 'Mr. Charrington', 'Radio', 'O\'Brien']
+    },
+    reflectionPrompt: "Winston knows that renting the room brings him closer to arrest and death. Why does he do it anyway? What does the room symbolize that makes it worth the risk?"
+  },
+  {
+    id: 'part2-chapter5',
+    title: 'Chapter 5: Syme Vanishes',
+    summary: "As Winston predicted, Syme is vaporized—he simply ceases to exist. His name is removed from all records. Meanwhile, preparations intensify for Hate Week, a massive propaganda celebration. Winston notices the new Hate Song being played everywhere. Julia remains indifferent to these political events, but Winston sees each disappearance as confirmation of the Party's absolute power over reality itself.",
+    themes: ['Control of Information', 'Totalitarianism'],
+    semanticFieldId: 2, // Party Ideology
+    stealData: {
+      characters: [
+        { character: 'Syme', categories: [
+          { category: 'Fate', sentence: "Syme is ___ and all records of his existence are destroyed.", answer: 'Vaporized' },
+          { category: 'Effects', sentence: "His name is removed from the chess club list as if he never ___.", answer: 'Existed' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Thoughts', sentence: "Winston realizes his prediction about Syme was ___.", answer: 'Correct' },
+          { category: 'Feelings', sentence: "He feels a grim satisfaction mixed with ___ at the Party's efficiency.", answer: 'Horror' },
+        ]}
+      ],
+      options: ['Vaporized', 'Existed', 'Correct', 'Horror', 'Promoted', 'Relief']
+    },
+    readingCompData: [
+      {
+        question: "Why was Syme vaporized?",
+        options: [
+          { text: "He was caught committing a crime.", isCorrect: false, feedback: "No specific crime is mentioned." },
+          { text: "He was too intelligent and saw too clearly.", isCorrect: true },
+          { text: "He tried to escape to Eurasia.", isCorrect: false, feedback: "There is no mention of escape attempts." },
+          { text: "He refused to work on Newspeak.", isCorrect: false, feedback: "He was enthusiastic about his work." },
+        ],
+        explanation: "As Winston predicted, Syme was vaporized not for any crime but because he understood too much. He could articulate what the Party was doing with language, which made him dangerous—even though he was completely loyal."
+      }
+    ],
+    quote: "Syme had ceased to exist: he had never existed.",
+    gameData: {
+      prompts: [
+        { text: "What happens to Syme.", answer: 'Vaporized' },
+        { text: "The propaganda event being prepared.", answer: 'Hate Week' },
+      ],
+      options: ['Vaporized', 'Hate Week', 'Promoted', 'Victory Day']
+    },
+    reflectionPrompt: "Syme was completely loyal to the Party, yet he was destroyed. What does this reveal about the nature of totalitarianism? Can anyone truly be 'safe' under such a system?"
+  },
+  {
+    id: 'part2-chapter6',
+    title: "Chapter 6: O'Brien's Invitation",
+    summary: "O'Brien, the Inner Party member Winston has long suspected of being a secret rebel, approaches Winston in a corridor. He compliments Winston's writing in Newspeak and mentions the Tenth Edition of the Newspeak Dictionary. He gives Winston his address, ostensibly to lend him an advance copy. Winston is convinced this is a secret signal—an invitation to join the Brotherhood. His heart pounds with dangerous hope.",
+    themes: ['Loyalty vs. Betrayal', 'Psychological Manipulation'],
+    semanticFieldId: 5, // Conspiracy & The Brotherhood
+    stealData: {
+      characters: [
+        { character: "O'Brien", categories: [
+          { category: 'Speech', sentence: "O'Brien compliments Winston's elegant use of ___.", answer: 'Newspeak' },
+          { category: 'Actions', sentence: "He gives Winston his private ___ under the guise of lending a dictionary.", answer: 'Address' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Thoughts', sentence: "Winston interprets the invitation as a sign that O'Brien is in the ___.", answer: 'Brotherhood' },
+          { category: 'Feelings', sentence: "He feels a mixture of hope and ___ at this dangerous opportunity.", answer: 'Terror' },
+        ]}
+      ],
+      options: ['Newspeak', 'Address', 'Brotherhood', 'Terror', 'Oldspeak', 'Joy']
+    },
+    readingCompData: [
+      {
+        question: "What excuse does O'Brien use to give Winston his address?",
+        options: [
+          { text: "He wants Winston to attend a Party meeting.", isCorrect: false, feedback: "The excuse is more subtle." },
+          { text: "He wants to lend Winston an advance copy of the Newspeak Dictionary.", isCorrect: true },
+          { text: "He needs Winston to correct some documents.", isCorrect: false, feedback: "This isn't the pretext used." },
+          { text: "He wants to report Winston's thoughtcrime.", isCorrect: false, feedback: "O'Brien appears to be recruiting, not threatening." },
+        ],
+        explanation: "O'Brien uses the pretext of lending Winston the Tenth Edition of the Newspeak Dictionary—a seemingly innocent professional courtesy that could also be a coded invitation to conspiracy."
+      }
+    ],
+    quote: "We shall meet in the place where there is no darkness.",
+    gameData: {
+      prompts: [
+        { text: "What O'Brien offers to lend Winston.", answer: 'Newspeak Dictionary' },
+        { text: "The secret organization Winston hopes O'Brien belongs to.", answer: 'Brotherhood' },
+      ],
+      options: ['Newspeak Dictionary', 'Brotherhood', 'History Book', 'Inner Party']
+    },
+    reflectionPrompt: "Winston believes O'Brien's invitation is genuine. What makes him so willing to trust, despite living in a world built on deception? Is his hope reasonable or reckless?"
+  },
+  {
+    id: 'part2-chapter7',
+    title: 'Chapter 7: Hope in the Proles',
+    summary: "In their secret room, Winston reads to Julia from his diary about how 'If there is hope, it lies in the proles.' The proles—the 85% of the population considered too stupid to control—live with a freedom Party members cannot imagine. Winston recalls seeing a prole woman beaten by police for owning a saucepan, yet the proles never organize. Julia dismisses political discussion, but Winston clings to the belief that the proles' sheer numbers and humanity will someday overthrow the Party.",
+    themes: ['Totalitarianism', 'Control of Information'],
+    semanticFieldId: 6, // Hope & Despair
+    stealData: {
+      characters: [
+        { character: 'Winston Smith', categories: [
+          { category: 'Thoughts', sentence: "Winston believes hope lies in the ___ because they are numerous and uncontrolled.", answer: 'Proles' },
+          { category: 'Actions', sentence: "He reads his ___ aloud to Julia in the secret room.", answer: 'Diary' },
+        ]},
+        { character: 'Julia', categories: [
+          { category: 'Thoughts', sentence: "Julia dismisses politics as ___ and prefers to focus on pleasure.", answer: 'Boring' },
+          { category: 'Feelings', sentence: "She shows little interest in Winston's theories about ___.", answer: 'Revolution' },
+        ]}
+      ],
+      options: ['Proles', 'Diary', 'Boring', 'Revolution', 'Party', 'History']
+    },
+    readingCompData: [
+      {
+        question: "Why does Winston believe hope lies in the proles?",
+        options: [
+          { text: "They have access to weapons the Party doesn't know about.", isCorrect: false, feedback: "The proles aren't secretly armed." },
+          { text: "They make up 85% of the population and retain human instincts.", isCorrect: true },
+          { text: "They secretly control the economy.", isCorrect: false, feedback: "The Party controls everything." },
+          { text: "They are educated in secret resistance.", isCorrect: false, feedback: "The proles are kept deliberately uneducated." },
+        ],
+        explanation: "Winston believes the proles' humanity hasn't been destroyed by the Party because they aren't considered worth controlling. Their natural instincts for family, love, and community remain intact—and they vastly outnumber Party members."
+      }
+    ],
+    quote: "If there is hope, it lies in the proles.",
+    gameData: {
+      prompts: [
+        { text: "The percentage of the population that are proles.", answer: '85%' },
+        { text: "What the Party considers the proles to be.", answer: 'Animals' },
+      ],
+      options: ['85%', 'Animals', '50%', 'Dangerous']
+    },
+    reflectionPrompt: "Winston believes the proles are humanity's only hope, yet they never rebel. Is Winston's faith justified, or is he projecting his own desires onto people who don't share them?"
+  },
+  {
+    id: 'part2-chapter8',
+    title: 'Chapter 8: The Brotherhood',
+    summary: "Winston and Julia visit O'Brien's luxurious Inner Party apartment. O'Brien reveals he is indeed a member of the Brotherhood and administers a catechism: Are they willing to commit murder, sabotage, betray their country, commit suicide? They agree to everything—except being separated from each other forever. O'Brien promises to send them a copy of 'The Book' by Emmanuel Goldstein. Winston leaves feeling he has crossed an irreversible threshold.",
+    themes: ['Loyalty vs. Betrayal', 'Totalitarianism'],
+    semanticFieldId: 5, // Conspiracy & The Brotherhood
+    stealData: {
+      characters: [
+        { character: "O'Brien", categories: [
+          { category: 'Speech', sentence: "O'Brien asks if they would throw ___ in a child's face.", answer: 'Acid' },
+          { category: 'Actions', sentence: "He pours real ___ for Winston and Julia—a luxury they've never tasted.", answer: 'Wine' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Speech', sentence: "Winston agrees to do anything for the Brotherhood except be separated from ___ forever.", answer: 'Julia' },
+          { category: 'Feelings', sentence: "He feels a sense of ___ at finally committing to the rebellion.", answer: 'Exaltation' },
+        ]}
+      ],
+      options: ['Acid', 'Wine', 'Julia', 'Exaltation', 'Water', 'Terror']
+    },
+    readingCompData: [
+      {
+        question: "What is the one thing Winston and Julia refuse to promise the Brotherhood?",
+        options: [
+          { text: "To commit murder.", isCorrect: false, feedback: "They agree to this." },
+          { text: "To never see each other again.", isCorrect: true },
+          { text: "To die for the cause.", isCorrect: false, feedback: "They accept they may die." },
+          { text: "To betray their country.", isCorrect: false, feedback: "They agree to this as well." },
+        ],
+        explanation: "Winston and Julia agree to commit any crime for the Brotherhood—murder, sabotage, even spreading disease. But when asked if they would agree to never see each other again, they refuse. This refusal will prove significant later."
+      }
+    ],
+    quote: "We are the dead.",
+    gameData: {
+      prompts: [
+        { text: "The book O'Brien promises to send.", answer: "Goldstein's Book" },
+        { text: "The luxury drink O'Brien serves.", answer: 'Wine' },
+      ],
+      options: ["Goldstein's Book", 'Wine', 'Diary', 'Coffee']
+    },
+    reflectionPrompt: "Winston and Julia agree to commit terrible acts for the Brotherhood but refuse to be separated. Is their love a strength or a weakness in their rebellion? What does O'Brien learn from their refusal?"
+  },
+  {
+    id: 'part2-chapter9',
+    title: 'Chapter 9: The Book',
+    summary: "During the chaos of Hate Week—when the enemy suddenly switches from Eurasia to Eastasia mid-rally—Winston receives Goldstein's book, 'The Theory and Practice of Oligarchical Collectivism.' He reads it in the secret room while Julia sleeps. The book explains that the Party seeks power entirely for its own sake, that the three superstates are essentially identical, and that the war is perpetual by design. It answers 'how' the Party controls everything but not 'why.'",
+    themes: ['Control of Information', 'Psychological Manipulation'],
+    semanticFieldId: 5, // Conspiracy & The Brotherhood
+    stealData: {
+      characters: [
+        { character: 'Winston Smith', categories: [
+          { category: 'Actions', sentence: "Winston reads The Book while Julia ___ beside him.", answer: 'Sleeps' },
+          { category: 'Thoughts', sentence: "He realizes The Book confirms what he already ___ but couldn't articulate.", answer: 'Knew' },
+        ]},
+        { character: 'Julia', categories: [
+          { category: 'Actions', sentence: "Julia finds The Book ___ and falls asleep during the reading.", answer: 'Tedious' },
+          { category: 'Thoughts', sentence: "She cares more about their private rebellion than political ___.", answer: 'Theory' },
+        ]}
+      ],
+      options: ['Sleeps', 'Knew', 'Tedious', 'Theory', 'Wakes', 'Fascinating']
+    },
+    readingCompData: [
+      {
+        question: "What does Goldstein's book explain about the three superstates?",
+        options: [
+          { text: "Oceania is clearly the most powerful.", isCorrect: false, feedback: "The book doesn't rank the powers." },
+          { text: "They are essentially identical and the war is designed to be endless.", isCorrect: true },
+          { text: "Eastasia is secretly allied with the Brotherhood.", isCorrect: false, feedback: "No such alliance is mentioned." },
+          { text: "The war will end when one nation wins.", isCorrect: false, feedback: "The book says the opposite." },
+        ],
+        explanation: "The Book reveals that Oceania, Eurasia, and Eastasia are structurally identical—all ruled by similar oligarchies. The perpetual war between them is designed to consume surplus production and keep populations poor and afraid, not to achieve victory."
+      }
+    ],
+    quote: "War is Peace. Freedom is Slavery. Ignorance is Strength.",
+    gameData: {
+      prompts: [
+        { text: "The author of The Book.", answer: 'Emmanuel Goldstein' },
+        { text: "The enemy that switches mid-rally during Hate Week.", answer: 'Eurasia to Eastasia' },
+      ],
+      options: ['Emmanuel Goldstein', 'Eurasia to Eastasia', "O'Brien", 'Eastasia to Eurasia']
+    },
+    reflectionPrompt: "The Book answers 'how' the Party rules but not 'why' they want power. Winston finds this unsatisfying. Why might Orwell leave this question unanswered until Part Three?"
+  },
+  {
+    id: 'part2-chapter10',
+    title: 'Chapter 10: The Arrest',
+    summary: "Winston wakes to Julia reciting a nursery rhyme: 'Here comes a candle to light you to bed, here comes a chopper to chop off your head.' They hear the red-armed prole woman singing outside and feel a momentary hope. Then a voice from behind the picture says 'You are the dead.' The picture hides a telescreen. Mr. Charrington enters—transformed, younger, a member of the Thought Police. Soldiers smash in, beat Julia, and drag them both away. The glass paperweight shatters. The secret room was a trap all along.",
+    themes: ['Loyalty vs. Betrayal', 'Surveillance'],
+    semanticFieldId: 3, // Surveillance
+    stealData: {
+      characters: [
+        { character: 'Mr. Charrington', categories: [
+          { category: 'Actions', sentence: "Charrington is revealed to be a member of the ___.", answer: 'Thought Police' },
+          { category: 'Effects', sentence: "His appearance changes—he looks decades ___ without his disguise.", answer: 'Younger' },
+        ]},
+        { character: 'Winston Smith', categories: [
+          { category: 'Feelings', sentence: "Winston feels complete ___ as everything he trusted proves false.", answer: 'Despair' },
+          { category: 'Actions', sentence: "He watches the glass paperweight ___ on the floor.", answer: 'Shatter' },
+        ]}
+      ],
+      options: ['Thought Police', 'Younger', 'Despair', 'Shatter', 'Brotherhood', 'Older']
+    },
+    readingCompData: [
+      {
+        question: "Where was the hidden telescreen concealed?",
+        options: [
+          { text: "Behind the mirror.", isCorrect: false, feedback: "The location was different." },
+          { text: "Behind the picture of St Clement's Dane.", isCorrect: true },
+          { text: "Inside the glass paperweight.", isCorrect: false, feedback: "The paperweight was just a symbol." },
+          { text: "Under the bed.", isCorrect: false, feedback: "The telescreen was on the wall." },
+        ],
+        explanation: "The telescreen was hidden behind the old picture of St Clement's Dane church—the same picture that represented a link to the past. The symbol of freedom was literally concealing the instrument of surveillance."
+      }
+    ],
+    quote: "Here comes a candle to light you to bed, here comes a chopper to chop off your head.",
+    gameData: {
+      prompts: [
+        { text: "What was hidden behind the picture.", answer: 'Telescreen' },
+        { text: "The object that shatters during the arrest.", answer: 'Glass Paperweight' },
+      ],
+      options: ['Telescreen', 'Glass Paperweight', 'Microphone', 'Diary']
+    },
+    reflectionPrompt: "The glass paperweight—symbol of beauty and the past—shatters during the arrest. How does this moment reflect the destruction of everything Winston hoped for? Was his rebellion doomed from the start?"
   }
 ];
 
