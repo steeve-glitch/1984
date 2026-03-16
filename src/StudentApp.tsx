@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import AppTabs from './components/AppTabs';
 import BackgroundInfo from './components/BackgroundInfo';
+import PreReadingHub from './components/PreReadingHub';
+import OrthodoxyCheck from './components/OrthodoxyCheck';
 import CharacterMap from './components/CharacterMap';
 import SceneContainer from './components/SceneContainer';
 import VocabularyHub from './components/VocabularyHub';
@@ -289,7 +291,11 @@ const StudentApp: React.FC = () => {
             case 'dashboard':
                 return <Dashboard completedScenes={completedScenes} doublethinkCompleted={doublethinkCompleted} onNavigate={handleNavigation} />;
             case 'introduction':
-                return <BackgroundInfo onNavigate={() => handleNavigation('scenes-part1')} />;
+                return <BackgroundInfo onNavigate={() => handleNavigation('pre-reading')} />;
+            case 'pre-reading':
+                return <PreReadingHub onNavigate={handleNavigation} />;
+            case 'orthodoxy-check':
+                return <OrthodoxyCheck onComplete={() => handleNavigation('pre-reading')} />;
             case 'character-map':
                 return <CharacterMap characters={CHARACTERS} />;
             case 'scenes':

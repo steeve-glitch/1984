@@ -21,7 +21,7 @@ const BackgroundInfo: FC<BackgroundInfoProps> = ({ onNavigate }) => {
                     <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Analysis: Crash Course Literature</h3>
                     <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-lg mx-auto max-w-2xl">
                         <iframe 
-                            src="https://www.youtube.com/embed/OEPaU_y_z-o" 
+                            src="https://www.youtube.com/embed/H9ipRaLa4Jw" 
                             title="1984 by George Orwell, Part 1: Crash Course Literature 401" 
                             frameBorder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 

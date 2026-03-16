@@ -19,6 +19,7 @@ interface MobileMenuProps {
 
 const navItems: NavItem[] = [
     { view: 'introduction', label: 'Introduction' },
+    { view: 'pre-reading', label: 'Pre-Reading' },
     { view: 'character-map', label: 'Character Map' },
     { view: 'relationship-explorer', label: 'Relationship Explorer' },
     { view: 'scenes-part1', label: 'Explore Part 1' },

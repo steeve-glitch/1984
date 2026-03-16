@@ -1,4 +1,4 @@
-export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'scenes-part1' | 'scenes-part2' | 'doublethink-game' | 'vocabulary' | 'writing' | 'relationship-explorer';
+export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'scenes-part1' | 'scenes-part2' | 'doublethink-game' | 'vocabulary' | 'writing' | 'relationship-explorer' | 'pre-reading' | 'orthodoxy-check' | 'propaganda-decoder' | 'dystopian-blueprint' | 'newspeak-lexicon' | 'orwell-dossier';
 
 export interface Character {
   id: string;

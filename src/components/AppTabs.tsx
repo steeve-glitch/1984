@@ -17,6 +17,7 @@ interface AppTabsProps {
 
 const navItems: NavItem[] = [
     { view: 'dashboard', label: 'My Journey' },
+    { view: 'pre-reading', label: 'Pre-Reading' },
     { view: 'character-map', label: 'Character Map' },
     { view: 'relationship-explorer', label: 'Relationship Explorer' },
     { view: 'scenes-part1', label: 'Explore Part 1' },

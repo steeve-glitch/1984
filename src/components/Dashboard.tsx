@@ -104,6 +104,17 @@ const Dashboard: FC<DashboardProps> = ({ completedScenes, doublethinkCompleted =
                         </div>
                     </div>
 
+                    {/* Pre-Reading */}
+                    <div className="relative">
+                        <span className={`absolute -left-[43px] flex h-6 w-6 items-center justify-center ring-4 ring-paper-white dark:ring-gray-800 ${completedScenes.length > 0 ? 'bg-party-red' : 'bg-ministry-black border-2 border-party-red'}`}>
+                            {completedScenes.length > 0 ? <CheckIcon /> : <span className="h-2 w-2 bg-white" />}
+                        </span>
+                        <div className="group cursor-pointer" onClick={() => onNavigate('pre-reading')}>
+                            <h4 className="text-lg font-bold text-ministry-black dark:text-white group-hover:text-party-red font-propaganda uppercase">Pre-Reading Briefing</h4>
+                            <p className="text-sm text-dystopia-gray dark:text-gray-400 font-terminal">Orthodoxy check and orientation modules.</p>
+                        </div>
+                    </div>
+
                     {/* Part 1 Header */}
                     <div className="relative">
                         <span className={`absolute -left-[43px] flex h-6 w-6 items-center justify-center ring-4 ring-paper-white dark:ring-gray-800 ${isPart1Complete ? 'bg-party-red' : 'bg-ministry-black border-2 border-party-red'}`}>
