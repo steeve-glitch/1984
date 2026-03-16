@@ -41,7 +41,7 @@ const ACTIVITIES: PreReadingActivity[] = [
     },
     {
         id: 'orwell-dossier',
-        title: 'Orwell's Classified File',
+        title: "Orwell's Classified File",
         description: 'Access the restricted background on author George Orwell and the historical world of 1948.',
         icon: '📁',
         status: 'coming-soon'
