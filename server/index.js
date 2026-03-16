@@ -14,7 +14,7 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 
 // DB Setup
-const defaultData = { completedScenes: [], doublethinkCompleted: false };
+const defaultData = { completedScenes: [], doublethinkCompleted: false, completedPreReading: [] };
 const db = await JSONFilePreset('db.json', defaultData);
 
 dotenv.config();
@@ -91,23 +91,35 @@ app.get('/api/progress', async (req, res) => {
   await db.read();
   res.json({
     completedScenes: db.data.completedScenes,
-    doublethinkCompleted: db.data.doublethinkCompleted || false
+    doublethinkCompleted: db.data.doublethinkCompleted || false,
+    completedPreReading: db.data.completedPreReading || []
   });
 });
 
 app.post('/api/progress', async (req, res) => {
-  const { sceneId } = req.body;
-  if (!sceneId) {
-    return res.status(400).json({ error: 'sceneId is required' });
-  }
+  const { sceneId, preReadingId } = req.body;
 
   await db.read();
-  if (!db.data.completedScenes.includes(sceneId)) {
-    db.data.completedScenes.push(sceneId);
-    await db.write();
+
+  if (sceneId) {
+    if (!db.data.completedScenes.includes(sceneId)) {
+      db.data.completedScenes.push(sceneId);
+      await db.write();
+    }
   }
 
-  res.json({ completedScenes: db.data.completedScenes });
+  if (preReadingId) {
+    if (!db.data.completedPreReading) db.data.completedPreReading = [];
+    if (!db.data.completedPreReading.includes(preReadingId)) {
+      db.data.completedPreReading.push(preReadingId);
+      await db.write();
+    }
+  }
+
+  res.json({ 
+    completedScenes: db.data.completedScenes,
+    completedPreReading: db.data.completedPreReading 
+  });
 });
 
 app.post('/api/doublethink-complete', async (req, res) => {

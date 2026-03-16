@@ -35,6 +35,7 @@ const StudentApp: React.FC = () => {
     const [currentPart1SceneIndex, setCurrentPart1SceneIndex] = useState(0);
     const [currentPart2SceneIndex, setCurrentPart2SceneIndex] = useState(0);
     const [completedScenes, setCompletedScenes] = useState<string[]>([]);
+    const [completedPreReading, setCompletedPreReading] = useState<string[]>([]);
     const [doublethinkCompleted, setDoublethinkCompleted] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAnimating, setIsAnimating] = useState(true);
@@ -54,6 +55,9 @@ const StudentApp: React.FC = () => {
             .then(data => {
                 if (data.completedScenes) {
                     setCompletedScenes(data.completedScenes);
+                }
+                if (data.completedPreReading) {
+                    setCompletedPreReading(data.completedPreReading);
                 }
                 if (data.doublethinkCompleted) {
                     setDoublethinkCompleted(data.doublethinkCompleted);
@@ -116,6 +120,18 @@ const StudentApp: React.FC = () => {
         } else if (part === 'part2' && currentPart2SceneIndex < PART2_SCENES.length - 1) {
             setCurrentPart2SceneIndex(currentPart2SceneIndex + 1);
         }
+    };
+
+    const handlePreReadingComplete = (id: string) => {
+        const newCompleted = completedPreReading.includes(id) ? completedPreReading : [...completedPreReading, id];
+        setCompletedPreReading(newCompleted);
+
+        // Save to DB
+        fetch('http://localhost:8787/api/progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ preReadingId: id })
+        }).catch(err => console.error("Failed to save progress:", err));
     };
 
     const handleDoublethinkComplete = () => {
@@ -293,9 +309,12 @@ const StudentApp: React.FC = () => {
             case 'introduction':
                 return <BackgroundInfo onNavigate={() => handleNavigation('pre-reading')} />;
             case 'pre-reading':
-                return <PreReadingHub onNavigate={handleNavigation} />;
+                return <PreReadingHub onNavigate={handleNavigation} completedActivities={completedPreReading} />;
             case 'orthodoxy-check':
-                return <OrthodoxyCheck onComplete={() => handleNavigation('pre-reading')} />;
+                return <OrthodoxyCheck onComplete={() => {
+                    handlePreReadingComplete('orthodoxy-check');
+                    handleNavigation('pre-reading');
+                }} />;
             case 'character-map':
                 return <CharacterMap characters={CHARACTERS} />;
             case 'scenes':
