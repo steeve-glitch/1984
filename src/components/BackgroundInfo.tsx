@@ -24,7 +24,8 @@ const BackgroundInfo: FC<BackgroundInfoProps> = ({ onNavigate }) => {
                             src="https://www.youtube.com/embed/H9ipRaLa4Jw" 
                             title="1984 by George Orwell, Part 1: Crash Course Literature 401" 
                             frameBorder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
                             className="w-full h-full min-h-[300px]"
                         ></iframe>

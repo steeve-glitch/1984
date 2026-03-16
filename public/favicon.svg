@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer circle / Iris -->
+  <circle cx="16" cy="16" r="14" fill="#111111" stroke="#B22222" stroke-width="2"/>
+  <!-- Sclera / Eye shape -->
+  <path d="M4 16C4 16 8 8 16 8C24 8 28 16 28 16C28 16 24 24 16 24C8 24 4 16 4 16Z" fill="#F5F5F5"/>
+  <!-- Iris -->
+  <circle cx="16" cy="16" r="6" fill="#B22222"/>
+  <!-- Pupil -->
+  <circle cx="16" cy="16" r="3" fill="#000000"/>
+  <!-- Highlight -->
+  <circle cx="14.5" cy="14.5" r="1.5" fill="white" fill-opacity="0.8"/>
 </svg>
