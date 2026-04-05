@@ -16,9 +16,9 @@ const Dashboard: FC<DashboardProps> = ({ completedScenes, doublethinkCompleted =
 
     // Determine the next step
     let nextUp = {
-        title: "Introduction & Background",
-        action: () => onNavigate('introduction'),
-        description: "Start here to understand the context of the novel."
+        title: "Orwell Dossier",
+        action: () => onNavigate('pre-reading'),
+        description: "Start here — biographical and historical context connected to the text."
     };
 
     const firstIncompletePart1Index = PART1_SCENES.findIndex(s => !completedScenes.includes(s.id));
@@ -50,8 +50,8 @@ const Dashboard: FC<DashboardProps> = ({ completedScenes, doublethinkCompleted =
             // All complete!
             nextUp = {
                 title: "Journey Complete!",
-                action: () => onNavigate('writing'),
-                description: "Excellent work! Head to the Writing Workshop to synthesize your knowledge."
+                action: () => onNavigate('dashboard'),
+                description: "Excellent work! All chapters complete."
             };
         }
     }
@@ -93,25 +93,14 @@ const Dashboard: FC<DashboardProps> = ({ completedScenes, doublethinkCompleted =
                 <h3 className="text-2xl font-bold text-ministry-black dark:text-white mb-6 uppercase border-b-2 border-black pb-2 font-propaganda">Course Map</h3>
                 <div className="relative border-l-4 border-black dark:border-gray-500 ml-3 space-y-8 pl-8 pb-2">
 
-                    {/* Introduction */}
-                    <div className="relative">
-                        <span className={`absolute -left-[43px] flex h-6 w-6 items-center justify-center ring-4 ring-paper-white dark:ring-gray-800 bg-party-red`}>
-                            {completedScenes.length > 0 ? <CheckIcon /> : <span className="h-2 w-2 bg-white" />}
-                        </span>
-                        <div className="group cursor-pointer" onClick={() => onNavigate('introduction')}>
-                            <h4 className="text-lg font-bold text-ministry-black dark:text-white group-hover:text-party-red font-propaganda uppercase">Introduction & Context</h4>
-                            <p className="text-sm text-dystopia-gray dark:text-gray-400 font-terminal">Historical background and major themes.</p>
-                        </div>
-                    </div>
-
-                    {/* Pre-Reading */}
+                    {/* Pre-Reading / Orwell Dossier */}
                     <div className="relative">
                         <span className={`absolute -left-[43px] flex h-6 w-6 items-center justify-center ring-4 ring-paper-white dark:ring-gray-800 ${completedScenes.length > 0 ? 'bg-party-red' : 'bg-ministry-black border-2 border-party-red'}`}>
                             {completedScenes.length > 0 ? <CheckIcon /> : <span className="h-2 w-2 bg-white" />}
                         </span>
                         <div className="group cursor-pointer" onClick={() => onNavigate('pre-reading')}>
-                            <h4 className="text-lg font-bold text-ministry-black dark:text-white group-hover:text-party-red font-propaganda uppercase">Pre-Reading Briefing</h4>
-                            <p className="text-sm text-dystopia-gray dark:text-gray-400 font-terminal">Orthodoxy check and orientation modules.</p>
+                            <h4 className="text-lg font-bold text-ministry-black dark:text-white group-hover:text-party-red font-propaganda uppercase">The Orwell Dossier</h4>
+                            <p className="text-sm text-dystopia-gray dark:text-gray-400 font-terminal">Biographical and historical context — read this before Part 1.</p>
                         </div>
                     </div>
 

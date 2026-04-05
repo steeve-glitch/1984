@@ -1,8 +1,14 @@
-export type ViewMode = 'dashboard' | 'introduction' | 'character-map' | 'scenes' | 'scenes-part1' | 'scenes-part2' | 'doublethink-game' | 'vocabulary' | 'writing' | 'relationship-explorer' | 'pre-reading' | 'orthodoxy-check' | 'propaganda-decoder' | 'dystopian-blueprint' | 'newspeak-lexicon' | 'orwell-dossier';
+export type ViewMode =
+  | 'dashboard'
+  | 'pre-reading'
+  | 'scenes-part1'
+  | 'doublethink-game'
+  | 'newspeak-lexicon'
+  | 'scenes-part2';
 
 export interface Character {
-  id: string;
   name: string;
+  description: string;
 }
 
 export interface SymbolInfo {
@@ -19,7 +25,6 @@ export interface SemanticFieldTerm {
   word: string;
   definition: string;
   connection: string;
-  magicSentence?: string;
 }
 
 export interface SemanticField {
@@ -29,136 +34,77 @@ export interface SemanticField {
   terms: SemanticFieldTerm[];
 }
 
-export interface StealCategory {
-  category: string;
-  sentence: string;
-  answer: string;
+export interface NewspeakTerm {
+  term: string;
+  definition: string;
+  significance: string;
 }
 
-export interface StealCharacter {
-  character: string;
-  categories: StealCategory[];
-}
-
-export interface StealData {
-  characters: StealCharacter[];
-  options: string[];
-}
-
-export interface ReadingCompOption {
-  text: string;
-  isCorrect: boolean;
-  feedback?: string;
-}
-
-export interface ReadingCompQuestion {
-  question: string;
-  options: ReadingCompOption[];
-  explanation: string;
-}
+// ── Close Reading Activity ────────────────────────────────────────────────────
 
 export interface CloseReadingOption {
-    text: string;
-    isCorrect: boolean;
-    feedback?: string;
-}
-
-export interface CloseReadingQuestion {
-    quote: string;
-    question: string;
-    options: CloseReadingOption[];
-    explanation: string;
-}
-
-export interface GamePrompt {
   text: string;
-  answer: string;
+  isCorrect: boolean;
+  feedback: string;
 }
 
-export interface GameData {
-  prompts: GamePrompt[];
-  options: string[];
+export interface CloseReadingPassage {
+  passage: string;
+  question: string; // always framed as "What does Orwell achieve/establish by..."
+  options: CloseReadingOption[];
+  insight: string; // deeper analytical note revealed after answering
 }
+
+export interface CloseReadingData {
+  passages: CloseReadingPassage[];
+}
+
+// ── Paragraph Builder Activity ────────────────────────────────────────────────
+
+export type ParagraphStepId = 'claim' | 'technique' | 'evidence' | 'effect' | 'significance';
+
+export interface ParagraphStep {
+  id: ParagraphStepId;
+  label: string;
+  instruction: string;
+  guidedOptions: string[];
+  placeholder: string;
+}
+
+export interface ParagraphBuilderData {
+  focus: string; // the analytical question this paragraph answers
+  steps: ParagraphStep[];
+  modelParagraph: string; // shown at completion for comparison
+}
+
+// ── World Today Activity ──────────────────────────────────────────────────────
+
+export interface WorldTodayData {
+  question: string;
+  sampleResponses: string[]; // 2–3 examples shown before free write
+}
+
+// ── Scene ─────────────────────────────────────────────────────────────────────
 
 export interface Scene {
   id: string;
   title: string;
   summary: string;
   themes: string[];
-  semanticFieldId: number;
-  stealData: StealData;
-  readingCompData: ReadingCompQuestion[];
   quote: string;
-  gameData: GameData;
-  reflectionPrompt: string;
+  closeReadingData?: CloseReadingData;
+  paragraphBuilderData?: ParagraphBuilderData;
+  worldTodayData?: WorldTodayData;
 }
 
-export interface WritingTopic {
-  id: string;
-  title: string;
-  description: string;
-  techniques: string[];
-  textEvidence: string[];
-}
-
-export interface SentenceFeedback {
-  sentenceIndex: number;
-  feedback: string;
-}
-
-export type AnalyticalParagraph = string[];
-
-export interface VocabOption {
-  word: string;
-  definition: string;
-}
-
-export interface VocabQuestion {
-  question: string;
-  options: VocabOption[];
-  answer: string;
-}
-
-export interface StageDirectionOption {
-    text: string;
-}
-  
-export interface StageDirectionQuestion {
-    quote: string;
-    question: string;
-    options: StageDirectionOption[];
-    answer: string;
-    explanation: string;
-}
-
-export interface QuoteAnalysisOption {
-  text: string;
-  isCorrect: boolean;
-}
-
-export interface QuoteAnalysisQuestion {
-  quote: string;
-  question:string;
-  options: QuoteAnalysisOption[];
-  explanation: string;
-}
+// ── Chatbot ───────────────────────────────────────────────────────────────────
 
 export interface ChatMessage {
   sender: 'user' | 'ai';
   text: string;
 }
 
-export interface MagicSentenceFocusArea {
-  title: string;
-  techniques: string[];
-  textEvidence: string[];
-  modelSentences: string[];
-}
-
-export interface Page {
-  id: string;
-  title: string;
-}
+// ── Doublethink Game (unchanged) ──────────────────────────────────────────────
 
 export interface DoublethinkOption {
   text: string;

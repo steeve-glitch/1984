@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSchoolEmail() {
+      return request.auth.token.email.matches('.*@stjohns\\.cl');
+    }
+
+    function isTeacher() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'teacher';
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── User profiles ─────────────────────────────────────────────────────────
+    // Students read/write their own doc; teachers read all docs.
+    // Role field can only be changed by a teacher.
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow create: if isOwner(uid) && isSchoolEmail();
+      allow update: if isOwner(uid) && isSchoolEmail()
+                       && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
+                    || isTeacher();
+    }
+
+    // ── Student progress ──────────────────────────────────────────────────────
+    // Students read/write their own doc; teachers read all docs.
+    match /progress/{uid} {
+      allow read: if isOwner(uid) || isTeacher();
+      allow write: if isOwner(uid) && isSchoolEmail();
+    }
+  }
+}

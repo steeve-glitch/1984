@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   onMenuClick: () => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  onGlossaryClick: () => void;
 }
 
-const Header: FC<HeaderProps> = ({ onMenuClick, theme, toggleTheme }) => {
+const Header: FC<HeaderProps> = ({ onMenuClick, theme, toggleTheme, onGlossaryClick }) => {
+  const { user, signOut } = useAuth();
   return (
     <header className="bg-ministry-black border-b-4 border-party-red sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,7 +30,28 @@ const Header: FC<HeaderProps> = ({ onMenuClick, theme, toggleTheme }) => {
                 <span className="text-xs text-gray-400 font-terminal uppercase tracking-widest">Airstrip One</span>
                 <span className="text-xs text-party-red font-bold font-terminal uppercase tracking-widest animate-pulse">Connection Secure</span>
              </div>
+            <button
+              onClick={onGlossaryClick}
+              className="px-3 py-1.5 border border-gray-600 font-terminal text-[10px] uppercase tracking-widest text-gray-300 hover:border-white hover:text-white transition-colors"
+              aria-label="Open glossary"
+            >
+              Glossary
+            </button>
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            {user && (
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="text-gray-500 font-terminal text-[10px] uppercase tracking-widest max-w-[120px] truncate">
+                  {user.displayName || user.email}
+                </span>
+                <button
+                  onClick={signOut}
+                  className="px-3 py-1.5 border border-gray-700 font-terminal text-[10px] uppercase tracking-widest text-gray-500 hover:border-party-red hover:text-party-red transition-colors"
+                  aria-label="Sign out"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
             <div className="lg:hidden ml-2">
               <button
                 onClick={onMenuClick}

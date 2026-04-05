@@ -1,169 +1,193 @@
-import React, { useState, FC } from 'react';
+import React, { useState, useMemo, FC } from 'react';
 import Card from './Card';
-import SceneAnalysis from './SceneAnalysis';
-import ReadingCompQuiz from './ReadingCompQuiz';
-import StealCharacterizationActivity from './StealCharacterizationActivity';
-import QuoteAnalysis from './QuoteAnalysis';
-import SymbolCharacterGame from './SymbolCharacterGame';
-import AnalysisReflection from './AnalysisReflection';
-import SemanticFieldActivity from './SemanticFieldActivity';
-import MatchingGame from './MatchingGame';
-import ThemeTracker from './ThemeTracker';
-import { Scene, Character, SymbolInfo, Theme } from '../types';
-import { SEMANTIC_FIELDS } from '../constants';
+import { Scene } from '../types';
+import CloseReadingActivity from './CloseReadingActivity';
+import ParagraphBuilder from './ParagraphBuilder';
+import WorldTodayActivity from './WorldTodayActivity';
 
-interface SceneContainerProps {
+interface Props {
   scene: Scene;
   onComplete: () => void;
-  allCharacters: Character[];
-  allSymbols: SymbolInfo[];
-  allThemes: Theme[];
 }
 
-type SceneActivity = 'analysis' | 'readingComp' | 'semanticField' | 'matchingGame' | 'steal' | 'quote' | 'game' | 'reflection';
+type Activity = 'overview' | 'close-reading' | 'paragraph' | 'world-today';
 
-const SceneContainer: FC<SceneContainerProps> = ({ scene, onComplete, allCharacters, allSymbols, allThemes }) => {
-  const activityFlow: SceneActivity[] = [
-    'analysis',
-    'readingComp',
-    'semanticField',
-    'matchingGame',
-    'steal',
-    'quote',
-    'game',
-    'reflection',
-  ];
+const ACTIVITY_META: Record<Activity, { label: string; icon: string }> = {
+  'overview':      { label: 'Overview',       icon: '📖' },
+  'close-reading': { label: 'Close Reading',  icon: '🔍' },
+  'paragraph':     { label: 'Write',          icon: '✍️' },
+  'world-today':   { label: 'The World Today', icon: '🌍' },
+};
 
-  const [currentActivityIndex, setCurrentActivityIndex] = useState(0);
-  const semanticField = SEMANTIC_FIELDS.find(sf => sf.id === scene.semanticFieldId);
+const SceneContainer: FC<Props> = ({ scene, onComplete }) => {
+  const flow = useMemo<Activity[]>(() => {
+    const f: Activity[] = ['overview'];
+    if (scene.closeReadingData) f.push('close-reading');
+    if (scene.paragraphBuilderData) f.push('paragraph');
+    if (scene.worldTodayData) f.push('world-today');
+    return f;
+  }, [scene]);
 
-  const handleNextActivity = () => {
-    if (currentActivityIndex < activityFlow.length - 1) {
-      setCurrentActivityIndex(currentActivityIndex + 1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentActivity = flow[currentIndex];
+
+  const handleNext = () => {
+    if (currentIndex < flow.length - 1) {
+      setCurrentIndex(i => i + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       onComplete();
     }
   };
-  
-  const renderCurrentActivity = () => {
-    const activity = activityFlow[currentActivityIndex];
-    
-    switch (activity) {
-      case 'analysis':
-        return <SceneAnalysis sceneSummary={scene.summary} clickableCharacters={allCharacters} clickableSymbols={allSymbols} onComplete={handleNextActivity} />;
-      case 'readingComp':
-        return <ReadingCompQuiz questions={scene.readingCompData} onComplete={handleNextActivity} />;
-      case 'semanticField':
-        if (!semanticField) {
-            return <SemanticFieldFallback onSkip={handleNextActivity} />;
-        }
-        return <SemanticFieldActivity field={semanticField} onComplete={handleNextActivity} />;
-      case 'matchingGame':
-        if (!semanticField) {
-            return <SemanticFieldFallback onSkip={handleNextActivity} />;
-        }
-        return <MatchingGame terms={semanticField.terms} onComplete={handleNextActivity} />;
-      case 'steal':
-        return <StealCharacterizationActivity data={scene.stealData} onComplete={handleNextActivity} />;
-      case 'quote':
-        return <QuoteAnalysis quotes={[scene.quote]} onComplete={handleNextActivity} />;
-      case 'game':
-        return <SymbolCharacterGame gameData={scene.gameData} onComplete={handleNextActivity} />;
-      case 'reflection':
-        return <AnalysisReflection question={scene.reflectionPrompt} onComplete={handleNextActivity} />;
+
+  const progress = Math.round((currentIndex / flow.length) * 100);
+
+  const renderActivity = () => {
+    switch (currentActivity) {
+      case 'overview':
+        return <OverviewActivity scene={scene} onComplete={handleNext} />;
+      case 'close-reading':
+        return scene.closeReadingData
+          ? <CloseReadingActivity data={scene.closeReadingData} onComplete={handleNext} />
+          : null;
+      case 'paragraph':
+        return scene.paragraphBuilderData
+          ? <ParagraphBuilder data={scene.paragraphBuilderData} onComplete={handleNext} />
+          : null;
+      case 'world-today':
+        return scene.worldTodayData
+          ? <WorldTodayActivity data={scene.worldTodayData} onComplete={handleNext} />
+          : null;
       default:
-        return <p>Activity not found.</p>;
+        return null;
     }
-  };
-  
-  const activityTitles: Record<SceneActivity, string> = {
-    analysis: 'Chapter Summary & Analysis',
-    readingComp: 'Reading Comprehension Check',
-    semanticField: `Vocabulary Focus: ${semanticField?.title || ''}`,
-    matchingGame: 'Vocabulary Matching Game',
-    steal: 'S.T.E.A.L. Characterization',
-    quote: 'Key Quote Analysis',
-    game: 'Symbol & Character Challenge',
-    reflection: 'Analysis & Reflection',
   };
 
   return (
-    <div className="space-y-8">
-      <ThemeTracker sceneThemes={scene.themes} allThemes={allThemes} />
-      
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Activity Navigation Sidebar */}
-        <nav className="w-full lg:w-72 flex-shrink-0">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-              <h3 className="font-semibold text-gray-700 dark:text-gray-200">Chapter Activities</h3>
-            </div>
-            <ul className="flex flex-col divide-y divide-gray-100 dark:divide-gray-700">
-              {activityFlow.map((activity, index) => {
-                const isActive = index === currentActivityIndex;
-                const isCompleted = index < currentActivityIndex;
-                
-                return (
-                  <li key={activity}>
-                    <button
-                      onClick={() => setCurrentActivityIndex(index)}
-                      className={`w-full text-left px-4 py-3 text-sm transition-colors duration-150 flex items-center gap-3
-                        ${isActive 
-                          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium border-l-4 border-blue-500' 
-                          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 border-l-4 border-transparent'
-                        }
-                      `}
-                    >
-                      <div className={`
-                        flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs
-                        ${isActive 
-                          ? 'bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-200' 
-                          : isCompleted
-                            ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-500'
-                        }
-                      `}>
-                        {isCompleted ? (
-                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        ) : (
-                          index + 1
-                        )}
-                      </div>
-                      <span className="truncate">{activityTitles[activity]}</span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </nav>
-
-        {/* Main Content Area */}
-        <div className="flex-1 min-w-0">
-            <Card title={`${scene.title}: ${activityTitles[activityFlow[currentActivityIndex]]}`}>
-                {renderCurrentActivity()}
-            </Card>
+    <div className="space-y-4">
+      {/* Progress bar */}
+      <div className="space-y-1">
+        <div className="flex justify-between items-center">
+          <span className="font-terminal text-[10px] uppercase tracking-widest text-gray-400">
+            Step {currentIndex + 1} of {flow.length}
+          </span>
+          <span className="font-terminal text-[10px] uppercase tracking-widest text-gray-400">
+            {progress}%
+          </span>
+        </div>
+        <div className="h-1 bg-gray-200 dark:bg-gray-700">
+          <div
+            className="h-full bg-party-red transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
         </div>
       </div>
+
+      {/* Step chips */}
+      <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-hide">
+        {flow.map((activity, i) => {
+          const { label, icon } = ACTIVITY_META[activity];
+          const isActive = i === currentIndex;
+          const isDone = i < currentIndex;
+          return (
+            <div key={activity} className="flex items-center gap-0.5 flex-shrink-0">
+              <button
+                onClick={() => isDone && setCurrentIndex(i)}
+                disabled={i > currentIndex}
+                title={label}
+                className={`
+                  flex items-center gap-1 px-3 py-1 border font-terminal text-[10px] uppercase tracking-wide transition-colors
+                  ${isActive
+                    ? 'border-party-red bg-party-red text-white font-bold'
+                    : isDone
+                    ? 'border-green-700 text-green-500 cursor-pointer hover:bg-green-900/10'
+                    : 'border-gray-300 dark:border-gray-700 text-gray-400 cursor-not-allowed'
+                  }
+                `}
+              >
+                <span>{isDone ? '✓' : icon}</span>
+                <span className="hidden sm:inline">{label}</span>
+              </button>
+              {i < flow.length - 1 && (
+                <span className={`text-[10px] ${isDone ? 'text-green-700' : 'text-gray-300 dark:text-gray-700'}`}>›</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Activity card */}
+      <Card title={`${scene.title} — ${ACTIVITY_META[currentActivity].label}`}>
+        {renderActivity()}
+      </Card>
     </div>
   );
 };
 
-export default SceneContainer;
+// ── Overview Activity ─────────────────────────────────────────────────────────
 
-const SemanticFieldFallback: FC<{ onSkip: () => void }> = ({ onSkip }) => (
-  <div className="flex flex-col items-center text-center space-y-4 py-6">
-    <p className="text-gray-700 dark:text-gray-300">
-      We couldn&apos;t load the vocabulary data for this chapter. You can revisit it later once the data is available.
-    </p>
-    <button
-      type="button"
-      onClick={onSkip}
-      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-    >
-      Skip this activity
-    </button>
+interface OverviewProps {
+  scene: Scene;
+  onComplete: () => void;
+}
+
+const OverviewActivity: FC<OverviewProps> = ({ scene, onComplete }) => (
+  <div className="space-y-6 p-2">
+    {/* Summary */}
+    <div>
+      <p className="font-terminal text-[10px] uppercase tracking-widest text-gray-400 mb-3">What happens in this chapter</p>
+      <p className="font-terminal text-sm leading-7 text-gray-700 dark:text-gray-300">
+        {scene.summary}
+      </p>
+    </div>
+
+    {/* Key quote */}
+    <div className="border-l-4 border-party-red pl-5 py-2">
+      <p className="font-terminal text-[10px] uppercase tracking-widest text-gray-400 mb-2">Key quotation</p>
+      <blockquote className="font-terminal text-sm leading-relaxed text-ministry-black dark:text-white italic">
+        "{scene.quote}"
+      </blockquote>
+      <p className="font-terminal text-[10px] text-gray-400 mt-2">— George Orwell, <em>Nineteen Eighty-Four</em></p>
+    </div>
+
+    {/* Themes */}
+    {scene.themes.length > 0 && (
+      <div>
+        <p className="font-terminal text-[10px] uppercase tracking-widest text-gray-400 mb-2">Themes in this chapter</p>
+        <div className="flex flex-wrap gap-2">
+          {scene.themes.map(theme => (
+            <span
+              key={theme}
+              className="border border-black dark:border-gray-500 px-3 py-1 font-terminal text-xs uppercase tracking-wide text-ministry-black dark:text-gray-300"
+            >
+              {theme}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Guiding question */}
+    {!scene.closeReadingData && (
+      <div className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 p-4">
+        <p className="font-terminal text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
+          Coming soon
+        </p>
+        <p className="font-terminal text-sm text-gray-600 dark:text-gray-400">
+          Activities for this chapter are being prepared.
+        </p>
+      </div>
+    )}
+
+    <div className="flex justify-end">
+      <button
+        onClick={onComplete}
+        className="px-6 py-3 bg-party-red text-white font-bold font-propaganda uppercase tracking-widest text-sm hover:bg-red-700 transition-colors"
+      >
+        {scene.closeReadingData ? 'Begin Close Reading →' : 'Mark Complete →'}
+      </button>
+    </div>
   </div>
 );
+
+export default SceneContainer;

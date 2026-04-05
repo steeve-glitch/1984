@@ -1,16 +1,8 @@
 import {
-  QuoteAnalysisQuestion,
   ChatMessage,
-  MagicSentenceFocusArea,
-  WritingTopic,
-  SentenceFeedback,
-  AnalyticalParagraph,
 } from '../types';
 
 type ChatbotResponse = { response: string };
-type QuoteAnalysisResponse = QuoteAnalysisQuestion;
-type ReflectionResponse = { feedback: string };
-type MagicSentenceResponse = { feedback: string };
 
 const envBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const API_BASE_URL =
@@ -50,42 +42,4 @@ export const getChatbotResponse = async (
 ): Promise<string> => {
   const data = await postJson<ChatbotResponse>('/api/chat', { context, messages });
   return data.response;
-};
-
-export const generateQuoteAnalysisQuiz = async (
-  quote: string,
-): Promise<QuoteAnalysisQuestion> => {
-  return postJson<QuoteAnalysisResponse>('/api/quote-analysis', { quote });
-};
-
-export const generateReflectionFeedback = async (
-  question: string,
-  reflection: string,
-): Promise<string> => {
-  const data = await postJson<ReflectionResponse>('/api/reflection-feedback', {
-    question,
-    reflection,
-  });
-  return data.feedback;
-};
-
-export const generateMagicSentenceFeedback = async (
-  focusArea: MagicSentenceFocusArea,
-  userSentence: string,
-): Promise<string> => {
-  const data = await postJson<MagicSentenceResponse>('/api/magic-sentence-feedback', {
-    focusArea,
-    userSentence,
-  });
-  return data.feedback;
-};
-
-export const generateWritingFeedback = async (
-  topic: WritingTopic,
-  paragraph: AnalyticalParagraph,
-): Promise<SentenceFeedback[]> => {
-  return postJson<SentenceFeedback[]>('/api/writing-feedback', {
-    topic,
-    paragraph,
-  });
 };
