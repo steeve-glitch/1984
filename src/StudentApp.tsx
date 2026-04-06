@@ -356,17 +356,26 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
           </div>
 
           {/* Chatbot toggle — always visible */}
-          <div className="fixed bottom-8 right-8 z-40">
+          <div className="fixed bottom-8 right-8 z-50">
             <button
               onClick={toggleChat}
-              className="relative flex items-center justify-center w-20 h-20 group"
+              className={`relative flex items-center justify-center group transition-all duration-300 ${chatbotIsOpen ? 'w-12 h-12' : 'w-20 h-20'}`}
               aria-label={chatbotIsOpen ? 'Close AI assistant' : 'Open AI assistant'}
             >
               {!chatbotIsOpen && (
                 <span className="absolute inline-flex h-full w-full rounded-full bg-party-red opacity-75 animate-ping" />
               )}
-              <span className="relative inline-flex rounded-full h-20 w-20 items-center justify-center transition-transform group-hover:scale-110 bg-ministry-black border-4 border-party-red">
-                <span className="text-3xl">{chatbotIsOpen ? '✕' : '👁️'}</span>
+              <span className={`relative inline-flex rounded-full items-center justify-center transition-all duration-300 group-hover:scale-110 bg-ministry-black border-party-red ${chatbotIsOpen ? 'w-12 h-12 border-2 opacity-60 group-hover:opacity-100' : 'w-20 h-20 border-4'}`}>
+                {chatbotIsOpen ? (
+                  <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M1 3C5 10 17 10 21 3" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                    <line x1="6" y1="9.5" x2="5" y2="13" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                    <line x1="11" y1="11" x2="11" y2="14" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                    <line x1="16" y1="9.5" x2="17" y2="13" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                ) : (
+                  <span className="text-3xl">👁️</span>
+                )}
               </span>
             </button>
           </div>
