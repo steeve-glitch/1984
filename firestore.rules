@@ -25,8 +25,8 @@ service cloud.firestore {
     // Role field can only be changed by a teacher.
     match /users/{uid} {
       allow read: if isOwner(uid) || isTeacher();
-      allow create: if isOwner(uid) && isSchoolEmail();
-      allow update: if isOwner(uid) && isSchoolEmail()
+      allow create: if isOwner(uid) && isSignedIn();
+      allow update: if isOwner(uid) && isSignedIn()
                        && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
                     || isTeacher();
     }

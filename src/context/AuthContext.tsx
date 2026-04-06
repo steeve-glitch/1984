@@ -55,21 +55,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // Get or create the user document
-      const userRef = doc(db, 'users', firebaseUser.uid);
-      const userSnap = await getDoc(userRef);
-
       let role: UserRole = 'student';
+      try {
+        const userRef = doc(db, 'users', firebaseUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      if (userSnap.exists()) {
-        role = (userSnap.data().role as UserRole) || 'student';
-      } else {
-        // First sign-in — create profile with default student role
-        await setDoc(userRef, {
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName || '',
-          role: 'student',
-          createdAt: serverTimestamp(),
-        });
+        if (userSnap.exists()) {
+          role = (userSnap.data().role as UserRole) || 'student';
+        } else {
+          // First sign-in — create profile with default student role
+          await setDoc(userRef, {
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName || '',
+            role: 'student',
+            createdAt: serverTimestamp(),
+          });
+        }
+      } catch (firestoreErr) {
+        const msg = firestoreErr instanceof Error ? firestoreErr.message : String(firestoreErr);
+        await firebaseSignOut(auth);
+        setError(`Profile setup failed: ${msg}`);
+        setUser(null);
+        setLoading(false);
+        return;
       }
 
       setError(null);
