@@ -403,7 +403,7 @@ export const SCENES: Scene[] = [
           guidedOptions: [
             '"Suddenly he was standing on short springy turf, on a summer evening when the slanting rays of the sun gilded the ground."',
             '"A hideous, grinding screech, as of some monstrous machine running without oil, burst from the big telescreen."',
-            '"It was almost normal for people over thirty to be frightened of their own children." [Note: wrong chapter — choose one above]',
+            '"A hideous, grinding screech, as of some monstrous machine running without oil, burst from the big telescreen at the end of the room."',
           ],
           placeholder: 'Embed your chosen quotation in a sentence...',
         },
@@ -1341,7 +1341,7 @@ export const SCENES: Scene[] = [
     title: 'Chapter 8: The Brotherhood',
     summary: "Winston and Julia visit O'Brien's Inner Party apartment. O'Brien reveals he is a member of the Brotherhood and administers a catechism: will they commit murder, sabotage, betray their country? They agree to everything — except being separated from each other. O'Brien promises to send them Goldstein's book.",
     themes: ['Loyalty vs. Betrayal', 'Totalitarianism'],
-    quote: "We are the dead.",
+    quote: "Not Julia! Not Julia!",
     closeReadingData: {
       passages: [
         {
@@ -1356,20 +1356,20 @@ export const SCENES: Scene[] = [
           insight: "The catechism is a masterpiece of escalating demand. O'Brien takes Winston through murder, sabotage, betrayal of country, and the corruption of children — and Winston agrees to each one. The escalation is designed to find the limit. When it does, the limit is not moral but personal: 'Not Julia! Not Julia!' Winston will commit any act of political violence but will not be separated from a person he loves. Orwell's argument is clear: ideology is negotiable, love is not. What Winston will not sacrifice is not his ethics or his conscience but his attachment to a specific human being. This is simultaneously the most human thing about him and the most dangerous — and Part 3 will measure what the Party does with exactly this vulnerability.",
         },
         {
-          passage: '"We are the dead," he said. "We are the dead," echoed Julia dutifully. "You are the dead," said an iron voice behind them. They sprang apart. O\'Brien had not spoken. The voice came from the telescreen. They were facing the black telescreen. "Remain exactly where you are. Make no movement until you are ordered."',
-          question: "What does Orwell achieve by having the telescreen complete Winston and Julia's sentence — returning 'we are the dead' as 'you are the dead' — at the moment of their arrest?",
+          passage: 'O\'Brien moved to the switch on the wall and pressed it. Winston looked at the telescreen. It had gone blank. O\'Brien raised his eyebrows. "You can turn it off," said Winston. "Yes," said O\'Brien, "we have that privilege. We are not above inconvenience, but we have this privilege." He looked at Winston and Julia. "Now I will ask you to come to the point. What is it that you want?"',
+          question: "What does Orwell achieve by having O'Brien switch off the telescreen — using an Inner Party privilege — as the opening act of what Winston believes is a Brotherhood meeting?",
           options: [
-            { text: "He creates a dramatic surprise: the reader and the characters are shocked simultaneously by the reveal.", isCorrect: false, feedback: "While the reveal is dramatically effective, Orwell is doing more than producing shock. The exact repetition with a changed pronoun is a precise linguistic act with a specific political meaning." },
-            { text: "He uses the pronoun shift from 'we' to 'you' to show that the Party takes Winston's own language and converts it from voluntary self-knowledge into an official verdict — demonstrating that even the words in which you accept your fate are not your own.", isCorrect: true, feedback: "Correct. 'We are the dead' was Winston's chosen, dignified phrase — a first-person plural acknowledgement, spoken privately. 'You are the dead' is the same phrase with one word changed, returned by an iron voice as a pronouncement of power. The Party does not just watch Winston — it takes his language and makes it its own." },
-            { text: "He creates ironic symmetry: Winston and Julia said 'we are the dead' and are now confirmed as such by an authority they cannot resist.", isCorrect: false, feedback: "The symmetry is present, but the mechanism — the specific pronoun change — carries a more precise meaning than ironic confirmation. Orwell is making a point about language and power, not just narrative structure." },
-            { text: "He shows that the Thought Police have been listening all along and simply chose this moment to act.", isCorrect: false, feedback: "This is true at the plot level, but it is not the effect Orwell is constructing in the exact repetition of the phrase. The focus should be on what the changed pronoun achieves." },
+            { text: "He shows that the Brotherhood has developed technology capable of defeating the Party's surveillance, offering Winston a genuine space of safety.", isCorrect: false, feedback: "The ability to turn off the telescreen is an Inner Party privilege, not a Brotherhood achievement. Orwell is not showing a safe space — he is showing who has always controlled the switch." },
+            { text: "He creates dramatic irony: the person who controls the surveillance apparatus uses that control to simulate the freedom that resistance requires — so what Winston experiences as liberation from observation is the most comprehensive form of it.", isCorrect: true, feedback: "Correct. O'Brien switches off the telescreen using his authority as one of the system's masters. The 'freedom' he creates for Winston is a performance of trust within an instrument of betrayal. Winston has not escaped the eye of the telescreen — he has walked directly into it." },
+            { text: "He establishes that Inner Party members are personally sympathetic to the oppression of Outer Party members, making O'Brien's eventual betrayal more surprising.", isCorrect: false, feedback: "The privilege of turning off the telescreen does not indicate sympathy — it indicates power. Orwell is not building sympathy for O'Brien here; he is establishing the architecture of the trap." },
+            { text: "He shows that the telescreen's surveillance is less total than Winston had feared, offering a note of hope for resistance.", isCorrect: false, feedback: "The discovery that Inner Party members can turn off the telescreen does not mean surveillance is limited — it means it is operated by people whom Outer Party members are trained to trust. This makes it more total, not less." },
           ],
-          insight: "'We are the dead' is Winston and Julia's most dignified statement: a voluntary acceptance of their situation, spoken in the first-person plural, acknowledging what they already knew. 'You are the dead' is the same phrase with one word changed — and that change is everything. 'We' implies a shared understanding, a chosen acknowledgement. 'You' is a verdict delivered from outside, by a voice with absolute power over their futures. Orwell has compressed the novel's central argument into a single grammatical act: in Oceania, the language in which you understand yourself is not yours. Winston cannot even name his own condition without the Party's capacity to take his naming and redirect it. This is what 'who controls the past controls the future' means at the level of the individual sentence.",
+          insight: "The telescreen switch is among the novel's most quietly devastating details. O'Brien uses his Inner Party privilege to create, for Winston and Julia, the experience of a space outside surveillance. But the switch is in O'Brien's hand. He is one of the system's masters — which means that what Winston experiences as the suspension of the Party's gaze is, in fact, its most complete expression. The entire meeting is taking place inside the machinery of the Party, operated by one of its most committed members. The 'privilege' O'Brien mentions is not incidental: it names the hierarchy that will destroy Winston. What looks like trust is control. What looks like freedom is the architecture of the trap.",
         },
       ],
     },
     paragraphBuilderData: {
-      focus: "How does Orwell use the catechism and the arrest phrase to show what the Party must destroy to complete its victory over Winston?",
+      focus: "How does Orwell use the catechism and O'Brien's control of the telescreen to show what the Party must destroy to complete its victory over Winston?",
       steps: [
         {
           id: 'claim',
@@ -1377,7 +1377,7 @@ export const SCENES: Scene[] = [
           instruction: 'What argument do you want to make about what Orwell achieves in Chapter 8? Choose one, then refine it.',
           guidedOptions: [
             "In Chapter 8, Orwell uses the catechism to reveal that Winston's deepest value is not ideological but personal — he will agree to any political violence, but not to the loss of Julia — establishing the precise vulnerability the Party will exploit in Part 3.",
-            "Through the arrest scene, Orwell shows that the Party's control over language is absolute: by taking Winston's own phrase 'we are the dead' and converting it to 'you are the dead,' it demonstrates that even the language of self-knowledge is not one's own.",
+            "Through O'Brien's switching off of the telescreen, Orwell shows that what Winston experiences as liberation from surveillance is its most complete form: the Party watches through the person Winston trusts, using the privilege of power to simulate the freedom that resistance requires.",
             "By structuring the catechism as an escalating test that finds the limit of Winston's commitment, Orwell argues that the human bond is more fundamental than ideological conviction — and that this makes it the most exploitable vulnerability in the novel's final act.",
           ],
           placeholder: 'Write your own version of the claim, or edit the one you selected...',
@@ -1388,8 +1388,8 @@ export const SCENES: Scene[] = [
           instruction: 'What literary technique does Orwell use to create this effect?',
           guidedOptions: [
             "Anaphora — the repeated structure of the catechism ('You are prepared to...? Yes.') creates a ritual rhythm that makes the one refusal more dramatic and precise: Winston agrees to everything until the thing he will not give.",
-            "Pronoun shift — the change from 'we are the dead' to 'you are the dead' performs the Party's expropriation of language in a single grammatical act: Winston's voluntary self-definition becomes an arrest warrant.",
-            "Dramatic irony — throughout Chapter 8, the reader can see what Winston cannot: that the catechism is not an induction into the Brotherhood but a map of his vulnerabilities, which the Party will use against him in Part 3.",
+            "Dramatic irony — throughout Chapter 8, the reader can see what Winston cannot: that the catechism is not an induction into the Brotherhood but a map of his vulnerabilities, and that the 'privilege' of the switched-off telescreen is operated by one of the Party's most loyal members.",
+            "Symbolic inversion — O'Brien uses the instrument of totalitarian control (the telescreen switch) to create the appearance of freedom, inverting the reader's expectations and showing that the Party's most sophisticated trap is built from the very thing Winston most desires: trust.",
           ],
           placeholder: 'Name the technique and explain what it involves...',
         },
@@ -1399,7 +1399,7 @@ export const SCENES: Scene[] = [
           instruction: 'Which quotation best supports your argument?',
           guidedOptions: [
             '"You are prepared to commit murder?" "Yes." [...] "Not Julia! Not Julia!" — the one limit in a litany of compliance.',
-            '"We are the dead." [...] "You are the dead," said an iron voice behind them.',
+            '"We have that privilege" — O\'Brien\'s description of the ability to switch off the telescreen, naming the hierarchy that will destroy Winston.',
             '"You are prepared to cheat, to forge, to blackmail, to corrupt the minds of children?" "Yes."',
           ],
           placeholder: 'Embed your chosen quotation in a sentence...',
@@ -1410,7 +1410,7 @@ export const SCENES: Scene[] = [
           instruction: 'What does this technique and quotation achieve?',
           guidedOptions: [
             "The anaphoric structure of the catechism makes Winston's one refusal — not Julia — stand out with absolute clarity against a background of total compliance: ideology is negotiable, love is not, and this distinction is precisely what the Party will exploit.",
-            "The pronoun shift from 'we' to 'you' performs the Party's ultimate violence against language: even the words in which Winston accepts his fate are not his own — the Party takes them, changes one word, and converts self-knowledge into accusation.",
+            "'We have that privilege' reveals the hierarchy that governs the entire meeting: O'Brien can offer the appearance of freedom because he is one of the system's masters. What Winston experiences as trust is the Party's most refined instrument of entrapment.",
             "The dramatic irony of the catechism — Winston believes he is being inducted into the Brotherhood while being tested for the Party's future use — makes the reader complicit in an understanding of Winston's vulnerability that he cannot yet see.",
           ],
           placeholder: 'Explain the effect on the reader and what it reveals...',
@@ -1421,13 +1421,13 @@ export const SCENES: Scene[] = [
           instruction: "Why is this significant to the novel as a whole?",
           guidedOptions: [
             "The catechism's discovery of Winston's limit — Julia — maps exactly onto the strategy of Part 3: in Room 101, O'Brien will not use ideology to break Winston but the threat of rats, exploiting not his politics but his body's involuntary terror. The novel's final act is implicit in Chapter 8's one refusal.",
-            "'You are the dead' completes the novel's argument about language: the Party does not merely control information — it controls the words in which people understand themselves. When Winston's own phrase is returned to him as a verdict, Orwell shows that even private self-knowledge has been colonised.",
+            "O'Brien's telescreen switch reveals the novel's deepest architecture: the Brotherhood meeting is staged inside the Party's own machinery, by one of its most committed operatives. The freedom Winston feels is not a gap in the system — it is the system, working at its most sophisticated level.",
             "The catechism establishes the deepest irony of Part 2: Winston and Julia believe they are joining a resistance movement when they are in fact providing a detailed map of their vulnerabilities. The Brotherhood's catechism is a weapon in disguise — Orwell's most economical dramatisation of how totalitarianism converts hope into the instrument of its own maintenance.",
           ],
           placeholder: "Connect your argument to Orwell's broader concerns...",
         },
       ],
-      modelParagraph: "In Chapter 8 of Part 2, Orwell uses the catechism to reveal the precise vulnerability that will destroy Winston in Part 3, and the arrest phrase to show that the Party's control over language extends to the words in which a person understands themselves. The catechism escalates systematically — murder, sabotage, the corruption of children — and Winston agrees to each act without hesitation. The anaphoric rhythm of compliance ('Yes... Yes... Yes') makes the one refusal devastatingly clear: 'Not Julia!' Winston will perform any act of political violence but will not accept separation from the person he loves. This is Orwell's argument about the hierarchy of Winston's values: ideology is negotiable, the human bond is not — and this is exactly the map of his vulnerabilities that the Party will use in Room 101. The arrest phrase completes the chapter's argument about language. 'We are the dead' is Winston's voluntary, dignified acknowledgement of their situation — the first-person plural implying shared understanding, a chosen acceptance. 'You are the dead,' returned from the telescreen, shifts the pronoun and changes everything: the Party takes Winston's own words and converts them from self-knowledge into verdict. Orwell has compressed his central argument into a single grammatical act: in Oceania, even the language in which you accept your fate does not belong to you.",
+      modelParagraph: "In Chapter 8 of Part 2, Orwell uses two interlocking devices — the telescreen switch and the catechism — to map the precise vulnerabilities the Party will exploit in Part 3. When O'Brien moves to the switch and the telescreen goes blank, he names the act with a phrase that should alert the reader: 'we have that privilege.' The word 'privilege' locates the authority within the Party's own hierarchy, not outside it. What Winston experiences as the suspension of surveillance is its most complete expression: the freedom of the meeting is manufactured by one of the system's masters, using the instrument of control to simulate the space that trust requires. The catechism deepens this architecture by mapping Winston's inner limits. The anaphoric rhythm of compliance — murder, sabotage, the corruption of children, yes to each — makes the one refusal stand out with devastating clarity: 'Not Julia!' Winston will agree to any political violence but will not accept separation from the person he loves. This is Orwell's argument about the hierarchy of values: ideology is negotiable, the human bond is not. Together, the telescreen switch and the catechism establish Chapter 8's central irony: Winston believes he is choosing resistance, but the chapter shows us that he is providing — willingly, gratefully — an exact map of where the Party must go to destroy him.",
     },
     worldTodayData: {
       question: "The catechism asks Winston to agree to acts he would normally find repugnant in the name of a cause. When, if ever, do you think extraordinary actions in pursuit of a political goal can be justified — and what limits, if any, should always exist?",
