@@ -27,6 +27,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const SCHOOL_DOMAIN = import.meta.env.VITE_SCHOOL_EMAIL_DOMAIN as string;
+const TEST_EMAILS = (import.meta.env.VITE_TEST_EMAILS as string | undefined)
+  ?.split(',').map(e => e.trim().toLowerCase()).filter(Boolean) ?? [];
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AppUser | null>(null);
@@ -42,7 +44,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // Hard domain enforcement (hd param is only a UI hint)
-      if (!firebaseUser.email.endsWith(`@${SCHOOL_DOMAIN}`)) {
+      const isSchoolEmail = firebaseUser.email.endsWith(`@${SCHOOL_DOMAIN}`);
+      const isTestEmail = TEST_EMAILS.includes(firebaseUser.email.toLowerCase());
+      if (!isSchoolEmail && !isTestEmail) {
         await firebaseSignOut(auth);
         setError(`Access restricted to @${SCHOOL_DOMAIN} accounts.`);
         setUser(null);
