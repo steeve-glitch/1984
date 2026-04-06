@@ -31,13 +31,16 @@ const Header: FC<HeaderProps> = ({ onMenuClick, theme, toggleTheme, onGlossaryCl
                 <span className="text-xs text-party-red font-bold font-terminal uppercase tracking-widest animate-pulse">Connection Secure</span>
              </div>
             <button
+              id="tutorial-glossary"
               onClick={onGlossaryClick}
               className="px-3 py-1.5 border border-gray-600 font-terminal text-[10px] uppercase tracking-widest text-gray-300 hover:border-white hover:text-white transition-colors"
               aria-label="Open glossary"
             >
               Glossary
             </button>
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <div id="tutorial-theme">
+              <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            </div>
             {user && (
               <div className="hidden sm:flex items-center gap-2">
                 <span className="text-gray-500 font-terminal text-[10px] uppercase tracking-widest max-w-[120px] truncate">

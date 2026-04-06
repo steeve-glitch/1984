@@ -60,7 +60,7 @@ const StudyPath: FC<StudyPathProps> = ({
   };
 
   return (
-    <div className="bg-ministry-black border-b-2 border-party-red px-4 py-2">
+    <div id="tutorial-study-path" className="bg-ministry-black border-b-2 border-party-red px-4 py-2">
       <div className="max-w-7xl mx-auto flex items-center gap-1 overflow-x-auto scrollbar-hide">
         <span className="text-[9px] font-terminal uppercase tracking-widest text-gray-500 mr-2 flex-shrink-0 hidden sm:block">
           Path:

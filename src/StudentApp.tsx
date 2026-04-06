@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import Chatbot from './components/Chatbot';
 import Glossary from './components/Glossary';
 import StudyPath from './components/StudyPath';
+import TutorialOverlay from './components/TutorialOverlay';
 import { ViewMode } from './types';
 import { PART1_SCENES, PART2_SCENES } from './constants';
 import { useChatbot } from './context/ChatbotContext';
@@ -35,6 +36,9 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [completionHub, setCompletionHub] = useState<{ sceneId: string; part: 'part1' | 'part2' } | null>(null);
+  const [showTutorial, setShowTutorial] = useState(() => {
+    return localStorage.getItem('tutorial_seen') !== 'true';
+  });
 
   const { isOpen: chatbotIsOpen, toggleChat, setContext } = useChatbot();
   const { user, signOut } = useAuth();
@@ -412,6 +416,15 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
 
       <Glossary isOpen={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
 
+      {showTutorial && (
+        <TutorialOverlay
+          onDismiss={() => {
+            localStorage.setItem('tutorial_seen', 'true');
+            setShowTutorial(false);
+          }}
+        />
+      )}
+
       <div className="relative z-10 flex flex-col min-h-screen">
         {onReturnToDashboard && (
           <div className="bg-party-red text-white font-terminal text-[11px] uppercase tracking-widest px-4 py-2 flex items-center justify-between sticky top-0 z-[60]">
@@ -460,6 +473,7 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
           {/* Chatbot toggle — always visible */}
           <div className="fixed bottom-8 right-8 z-50">
             <button
+              id="tutorial-chatbot"
               onClick={toggleChat}
               className={`relative flex items-center justify-center group transition-all duration-300 ${chatbotIsOpen ? 'w-12 h-12' : 'w-20 h-20'}`}
               aria-label={chatbotIsOpen ? 'Close AI assistant' : 'Open AI assistant'}
