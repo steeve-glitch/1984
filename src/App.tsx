@@ -1,5 +1,6 @@
 import React from 'react';
 import StudentApp from './StudentApp';
+import TeacherDashboard from './components/TeacherDashboard';
 import { ChatbotProvider } from './context/ChatbotContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginScreen from './components/LoginScreen';
@@ -21,6 +22,8 @@ const AppContent: React.FC = () => {
   }
 
   if (!user) return <LoginScreen />;
+
+  if (user.role === 'teacher') return <TeacherDashboard />;
 
   return (
     <ChatbotProvider>
