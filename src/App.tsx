@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StudentApp from './StudentApp';
 import TeacherDashboard from './components/TeacherDashboard';
 import { ChatbotProvider } from './context/ChatbotContext';
@@ -7,6 +7,7 @@ import LoginScreen from './components/LoginScreen';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
+  const [viewAsStudent, setViewAsStudent] = useState(false);
 
   if (loading) {
     return (
@@ -23,11 +24,15 @@ const AppContent: React.FC = () => {
 
   if (!user) return <LoginScreen />;
 
-  if (user.role === 'teacher') return <TeacherDashboard />;
+  if (user.role === 'teacher' && !viewAsStudent) {
+    return <TeacherDashboard onStudentView={() => setViewAsStudent(true)} />;
+  }
 
   return (
     <ChatbotProvider>
-      <StudentApp />
+      <StudentApp
+        onReturnToDashboard={user.role === 'teacher' ? () => setViewAsStudent(false) : undefined}
+      />
     </ChatbotProvider>
   );
 };

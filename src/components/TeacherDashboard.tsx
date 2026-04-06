@@ -23,7 +23,11 @@ const Check: React.FC<{ done: boolean }> = ({ done }) => (
   </span>
 );
 
-const TeacherDashboard: React.FC = () => {
+interface TeacherDashboardProps {
+  onStudentView: () => void;
+}
+
+const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) => {
   const { user, signOut } = useAuth();
   const [students, setStudents] = useState<StudentRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -119,13 +123,19 @@ const TeacherDashboard: React.FC = () => {
                 Ministry of Education — Class Overview
               </h1>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-party-red font-bold uppercase tracking-widest">
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline text-xs text-party-red font-bold uppercase tracking-widest">
                 TEACHER ACCESS
               </span>
-              <span className="text-gray-500 font-terminal text-[10px] uppercase tracking-widest max-w-[140px] truncate">
+              <span className="hidden md:inline text-gray-500 font-terminal text-[10px] uppercase tracking-widest max-w-[140px] truncate">
                 {user?.displayName || user?.email}
               </span>
+              <button
+                onClick={onStudentView}
+                className="px-3 py-1.5 border border-gray-600 font-terminal text-[10px] uppercase tracking-widest text-gray-300 hover:border-white hover:text-white transition-colors"
+              >
+                Student View
+              </button>
               <button
                 onClick={signOut}
                 className="px-3 py-1.5 border border-gray-700 font-terminal text-[10px] uppercase tracking-widest text-gray-500 hover:border-party-red hover:text-party-red transition-colors"

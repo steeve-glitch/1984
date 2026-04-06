@@ -21,7 +21,11 @@ import {
 
 const UNLOCK_ALL_SCENES = import.meta.env.VITE_UNLOCK_ALL_SCENES === 'true';
 
-const StudentApp: React.FC = () => {
+interface StudentAppProps {
+  onReturnToDashboard?: () => void;
+}
+
+const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
   const [viewMode, setViewMode] = useState<ViewMode>('dashboard');
   const [currentPart1SceneIndex, setCurrentPart1SceneIndex] = useState(0);
   const [currentPart2SceneIndex, setCurrentPart2SceneIndex] = useState(0);
@@ -34,10 +38,13 @@ const StudentApp: React.FC = () => {
   const { isOpen: chatbotIsOpen, toggleChat, setContext } = useChatbot();
   const { user, signOut } = useAuth();
 
-  const isPart1Complete = PART1_SCENES.every(s => completedScenes.includes(s.id));
-  const isDoublethinkUnlocked = isPart1Complete;
-  const isPart2Unlocked = doublethinkCompleted;
-  const isNewspeakUnlocked = isPart1Complete;
+  const isTeacher = user?.role === 'teacher';
+  const unlocked = UNLOCK_ALL_SCENES || isTeacher;
+
+  const isPart1Complete = isTeacher || PART1_SCENES.every(s => completedScenes.includes(s.id));
+  const isDoublethinkUnlocked = isTeacher || isPart1Complete;
+  const isPart2Unlocked = isTeacher || doublethinkCompleted;
+  const isNewspeakUnlocked = isTeacher || isPart1Complete;
 
   // Load progress from Firestore
   useEffect(() => {
@@ -121,7 +128,7 @@ const StudentApp: React.FC = () => {
       </div>
       <div className="flex overflow-x-auto space-x-2 p-2 bg-paper-white dark:bg-gray-900 border-2 border-black dark:border-gray-600 rounded-none justify-center">
         {PART1_SCENES.map((scene, index) => {
-          const isLocked = !UNLOCK_ALL_SCENES && index > 0 && !completedScenes.includes(PART1_SCENES[index - 1].id);
+          const isLocked = !unlocked && index > 0 && !completedScenes.includes(PART1_SCENES[index - 1].id);
           return (
             <button
               key={scene.id}
@@ -178,7 +185,7 @@ const StudentApp: React.FC = () => {
         </div>
         <div className="flex overflow-x-auto space-x-2 p-2 bg-paper-white dark:bg-gray-900 border-2 border-black dark:border-gray-600 rounded-none justify-center">
           {PART2_SCENES.map((scene, index) => {
-            const isLocked = !UNLOCK_ALL_SCENES && index > 0 && !completedScenes.includes(PART2_SCENES[index - 1].id);
+            const isLocked = !unlocked && index > 0 && !completedScenes.includes(PART2_SCENES[index - 1].id);
             return (
               <button
                 key={scene.id}
@@ -304,6 +311,17 @@ const StudentApp: React.FC = () => {
       <Glossary isOpen={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
 
       <div className="relative z-10 flex flex-col min-h-screen">
+        {onReturnToDashboard && (
+          <div className="bg-party-red text-white font-terminal text-[11px] uppercase tracking-widest px-4 py-2 flex items-center justify-between sticky top-0 z-[60]">
+            <span className="opacity-80">Teacher preview — changes here affect real student data</span>
+            <button
+              onClick={onReturnToDashboard}
+              className="border border-white px-3 py-1 hover:bg-red-700 transition-colors"
+            >
+              ← Back to Dashboard
+            </button>
+          </div>
+        )}
         <Header
           onMenuClick={() => {}}
           theme={theme}
