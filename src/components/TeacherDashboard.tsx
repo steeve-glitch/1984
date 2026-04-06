@@ -34,6 +34,8 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
   const [error, setError] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<'name' | 'p1' | 'p2'>('name');
   const [sortAsc, setSortAsc] = useState(true);
+  const [search, setSearch] = useState('');
+  const [progressFilter, setProgressFilter] = useState<'all' | 'not-started' | 'in-progress' | 'p1-complete' | 'p2-complete'>('all');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -78,7 +80,22 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const sorted = [...students].sort((a, b) => {
+  const filtered = students.filter(s => {
+    const q = search.toLowerCase();
+    if (q && !s.displayName.toLowerCase().includes(q) && !s.email.toLowerCase().includes(q)) return false;
+    const p1Count = PART1_IDS.filter(id => s.completedScenes.includes(id)).length;
+    const p2Count = PART2_IDS.filter(id => s.completedScenes.includes(id)).length;
+    const p1Complete = p1Count === PART1_IDS.length;
+    const p2Complete = p2Count === PART2_IDS.length;
+    const notStarted = p1Count === 0 && !s.completedPreReading.includes('pre-reading');
+    if (progressFilter === 'not-started') return notStarted;
+    if (progressFilter === 'in-progress') return !notStarted && !p2Complete;
+    if (progressFilter === 'p1-complete') return p1Complete;
+    if (progressFilter === 'p2-complete') return p2Complete;
+    return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
     let cmp = 0;
     if (sortKey === 'name') cmp = a.displayName.localeCompare(b.displayName);
     else if (sortKey === 'p1') cmp = a.completedScenes.filter(id => PART1_IDS.includes(id)).length - b.completedScenes.filter(id => PART1_IDS.includes(id)).length;
@@ -191,14 +208,44 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
           ))}
         </div>
 
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="flex-1 bg-gray-900 border border-gray-700 px-3 py-2 font-terminal text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-400"
+          />
+          <select
+            value={progressFilter}
+            onChange={e => setProgressFilter(e.target.value as typeof progressFilter)}
+            className="bg-gray-900 border border-gray-700 px-3 py-2 font-terminal text-xs text-gray-300 focus:outline-none focus:border-gray-400"
+          >
+            <option value="all">All students ({students.length})</option>
+            <option value="not-started">Not started</option>
+            <option value="in-progress">In progress</option>
+            <option value="p1-complete">Part 1 complete</option>
+            <option value="p2-complete">Part 2 complete</option>
+          </select>
+          {(search || progressFilter !== 'all') && (
+            <button
+              onClick={() => { setSearch(''); setProgressFilter('all'); }}
+              className="px-3 py-2 border border-gray-700 font-terminal text-xs text-gray-500 hover:text-white hover:border-gray-400 transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
         {/* Student table */}
         {loading && students.length === 0 ? (
           <div className="text-center py-16 text-gray-600 text-xs uppercase tracking-widest animate-pulse">
             Accessing records...
           </div>
-        ) : students.length === 0 ? (
+        ) : sorted.length === 0 ? (
           <div className="text-center py-16 text-gray-600 text-xs uppercase tracking-widest">
-            No student records found.
+            {students.length === 0 ? 'No student records found.' : 'No students match the current filter.'}
           </div>
         ) : (
           <div className="overflow-x-auto border border-gray-700">
