@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { collection, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../context/AuthContext';
 import { PART1_SCENES, PART2_SCENES } from '../constants';
@@ -20,6 +20,12 @@ const Check: React.FC<{ done: boolean }> = ({ done }) => (
   <span className={done ? 'text-green-400 font-bold' : 'text-gray-600'}>{done ? '✓' : '—'}</span>
 );
 
+interface SavedList {
+  name: string;
+  emails: string[];
+  savedAt: string; // ISO string
+}
+
 interface TeacherDashboardProps {
   onStudentView: () => void;
 }
@@ -36,9 +42,13 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
 
   // Class list
   const [classList, setClassList] = useState<string[]>([]);
+  const [savedLists, setSavedLists] = useState<SavedList[]>([]);
   const [classListOpen, setClassListOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const [savingList, setSavingList] = useState(false);
+  const [saveListName, setSaveListName] = useState('');
+  const [showSaveAs, setShowSaveAs] = useState(false);
+  const [savedConfirm, setSavedConfirm] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // ── Fetch students + teacher's class list ──────────────────────────────────
@@ -53,9 +63,10 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
         getDoc(doc(db, 'users', user.uid)),
       ]);
 
-      // Class list from teacher's own doc
+      // Class list + saved lists from teacher's own doc
       if (teacherSnap.exists()) {
         setClassList((teacherSnap.data().classList as string[] | undefined) ?? []);
+        setSavedLists((teacherSnap.data().savedLists as SavedList[] | undefined) ?? []);
       }
 
       const progressMap: Record<string, { completedScenes: string[]; completedPreReading: string[]; doublethinkCompleted: boolean }> = {};
@@ -92,12 +103,15 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
   useEffect(() => { fetchData(); }, [fetchData]);
 
   // ── Class list helpers ─────────────────────────────────────────────────────
-  const saveClassList = async (list: string[]) => {
+  const persistClassList = async (list: string[], updatedSavedLists?: SavedList[]) => {
     if (!user) return;
     setSavingList(true);
     try {
-      await updateDoc(doc(db, 'users', user.uid), { classList: list });
+      const payload: Record<string, unknown> = { classList: list };
+      if (updatedSavedLists !== undefined) payload.savedLists = updatedSavedLists;
+      await updateDoc(doc(db, 'users', user.uid), payload);
       setClassList(list);
+      if (updatedSavedLists !== undefined) setSavedLists(updatedSavedLists);
     } catch (err) {
       setError('Failed to save class list.');
     } finally {
@@ -111,7 +125,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
       .map(e => e.trim().toLowerCase())
       .filter(e => e.includes('@'));
     const merged = Array.from(new Set([...classList, ...emails]));
-    saveClassList(merged);
+    persistClassList(merged);
     setImportText('');
   };
 
@@ -128,7 +142,32 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
   };
 
   const removeFromList = (email: string) => {
-    saveClassList(classList.filter(e => e !== email));
+    persistClassList(classList.filter(e => e !== email));
+  };
+
+  const handleSaveAs = () => {
+    const name = saveListName.trim();
+    if (!name || classList.length === 0) return;
+    const existing = savedLists.findIndex(l => l.name === name);
+    const newEntry: SavedList = { name, emails: [...classList], savedAt: new Date().toISOString() };
+    const updated = existing >= 0
+      ? savedLists.map((l, i) => i === existing ? newEntry : l)
+      : [...savedLists, newEntry];
+    persistClassList(classList, updated);
+    setSaveListName('');
+    setShowSaveAs(false);
+    setSavedConfirm(true);
+    setTimeout(() => setSavedConfirm(false), 2500);
+  };
+
+  const loadSavedList = (list: SavedList) => {
+    persistClassList(list.emails);
+    setProgressFilter('my-class');
+  };
+
+  const deleteSavedList = (name: string) => {
+    const updated = savedLists.filter(l => l.name !== name);
+    persistClassList(classList, updated);
   };
 
   // Emails on the list who have not yet signed up
@@ -228,12 +267,40 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
 
         {/* Class list panel */}
         {classListOpen && (
-          <div className="mb-8 border border-gray-700 p-6 bg-gray-950">
-            <h3 className="text-xs uppercase tracking-widest text-gray-400 mb-4">Manage Class List</h3>
+          <div className="mb-8 border border-gray-700 p-6 bg-gray-950 space-y-6">
+
+            {/* Saved lists */}
+            {savedLists.length > 0 && (
+              <div>
+                <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Saved Class Lists</p>
+                <div className="flex flex-wrap gap-2">
+                  {savedLists.map(sl => (
+                    <div key={sl.name} className="flex items-center gap-0 border border-gray-700 overflow-hidden">
+                      <button
+                        onClick={() => loadSavedList(sl)}
+                        title={`${sl.emails.length} students · saved ${new Date(sl.savedAt).toLocaleDateString()}`}
+                        className="px-3 py-1.5 font-terminal text-[11px] text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                      >
+                        {sl.name}
+                        <span className="ml-2 text-gray-600">{sl.emails.length}</span>
+                      </button>
+                      <button
+                        onClick={() => deleteSavedList(sl.name)}
+                        className="px-2 py-1.5 text-gray-700 hover:text-party-red hover:bg-gray-800 transition-colors text-xs border-l border-gray-700"
+                        title="Delete list"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-gray-700 text-[10px] mt-2">Click a list name to load it as your active class filter.</p>
+              </div>
+            )}
 
             {/* Import area */}
-            <div className="mb-4">
-              <p className="text-gray-600 text-[11px] mb-2">Paste student emails (one per line, or comma/semicolon separated), or upload a CSV file.</p>
+            <div>
+              <p className="text-gray-600 text-[11px] mb-2">Add students — paste emails (one per line, or comma/semicolon separated) or upload a CSV.</p>
               <textarea
                 value={importText}
                 onChange={e => setImportText(e.target.value)}
@@ -263,14 +330,48 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({ onStudentView }) =>
             {classList.length > 0 && (
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-gray-500 text-[11px] uppercase tracking-widest">{classList.length} student{classList.length !== 1 ? 's' : ''} on list</p>
-                  <button
-                    onClick={() => { if (window.confirm('Clear the entire class list?')) saveClassList([]); }}
-                    className="text-[11px] text-gray-600 hover:text-party-red transition-colors uppercase tracking-widest"
-                  >
-                    Clear all
-                  </button>
+                  <p className="text-gray-500 text-[11px] uppercase tracking-widest">{classList.length} student{classList.length !== 1 ? 's' : ''} — active list</p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowSaveAs(v => !v)}
+                      className="text-[11px] text-gray-400 hover:text-white transition-colors uppercase tracking-widest"
+                    >
+                      Save as...
+                    </button>
+                    <button
+                      onClick={() => { if (window.confirm('Clear the active class list?')) persistClassList([]); }}
+                      className="text-[11px] text-gray-600 hover:text-party-red transition-colors uppercase tracking-widest"
+                    >
+                      Clear
+                    </button>
+                  </div>
                 </div>
+
+                {/* Save-as form */}
+                {showSaveAs && (
+                  <div className="flex gap-2 mb-3">
+                    <input
+                      type="text"
+                      value={saveListName}
+                      onChange={e => setSaveListName(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleSaveAs()}
+                      placeholder="List name (e.g. Year 12A)"
+                      className="flex-1 bg-gray-900 border border-gray-600 px-3 py-1.5 font-terminal text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-400"
+                    />
+                    <button
+                      onClick={handleSaveAs}
+                      disabled={!saveListName.trim() || savingList}
+                      className="px-4 py-1.5 bg-party-red text-white font-terminal text-xs uppercase tracking-widest hover:bg-red-700 disabled:opacity-40 transition-colors"
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+
+                {savedConfirm && (
+                  <p className="text-green-400 text-[11px] mb-2 uppercase tracking-widest">List saved ✓</p>
+                )}
+
                 <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
                   {classList.map(email => {
                     const joined = signedUpEmails.has(email);
