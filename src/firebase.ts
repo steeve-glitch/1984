@@ -17,8 +17,13 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Hint the Google popup to show only @stjohns.cl accounts
 export const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  hd: import.meta.env.VITE_SCHOOL_EMAIL_DOMAIN,
-});
+
+// Only restrict the popup to the school domain if no test emails are configured.
+// Domain enforcement is always handled in AuthContext regardless of this hint.
+const testEmails = (import.meta.env.VITE_TEST_EMAILS as string | undefined)?.trim();
+if (!testEmails) {
+  googleProvider.setCustomParameters({
+    hd: import.meta.env.VITE_SCHOOL_EMAIL_DOMAIN,
+  });
+}
