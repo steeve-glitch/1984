@@ -34,6 +34,7 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
   const [doublethinkCompleted, setDoublethinkCompleted] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const [completionHub, setCompletionHub] = useState<{ sceneId: string; part: 'part1' | 'part2' } | null>(null);
 
   const { isOpen: chatbotIsOpen, toggleChat, setContext } = useChatbot();
   const { user, signOut } = useAuth();
@@ -86,12 +87,31 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
     const newCompleted = completedScenes.includes(sceneId) ? completedScenes : [...completedScenes, sceneId];
     setCompletedScenes(newCompleted);
     if (user) saveSceneProgress(user.uid, sceneId).catch(console.error);
+    setCompletionHub({ sceneId, part });
+  };
 
-    if (part === 'part1' && currentPart1SceneIndex < PART1_SCENES.length - 1) {
-      setCurrentPart1SceneIndex(currentPart1SceneIndex + 1);
-    } else if (part === 'part2' && currentPart2SceneIndex < PART2_SCENES.length - 1) {
-      setCurrentPart2SceneIndex(currentPart2SceneIndex + 1);
+  const handleHubContinue = () => {
+    if (!completionHub) return;
+    const { part } = completionHub;
+    setCompletionHub(null);
+    if (part === 'part1') {
+      if (currentPart1SceneIndex < PART1_SCENES.length - 1) {
+        setCurrentPart1SceneIndex(i => i + 1);
+      } else {
+        setViewMode('doublethink-game');
+      }
+    } else {
+      if (currentPart2SceneIndex < PART2_SCENES.length - 1) {
+        setCurrentPart2SceneIndex(i => i + 1);
+      } else {
+        setViewMode('dashboard');
+      }
     }
+  };
+
+  const handleHubNavigate = (view: ViewMode, index?: number) => {
+    setCompletionHub(null);
+    handleNavigation(view, index);
   };
 
   const handlePreReadingComplete = () => {
@@ -259,6 +279,88 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
     return <DoublethinkGame onComplete={handleDoublethinkComplete} />;
   };
 
+  const renderCompletionHub = () => {
+    if (!completionHub) return null;
+    const { sceneId, part } = completionHub;
+    const scenes = part === 'part1' ? PART1_SCENES : PART2_SCENES;
+    const currentIdx = scenes.findIndex(s => s.id === sceneId);
+    const isLastInPart = currentIdx === scenes.length - 1;
+
+    const continueLabel = part === 'part1'
+      ? isLastInPart ? 'Go to Doublethink Challenge →' : `Continue to Ch ${currentIdx + 2} →`
+      : isLastInPart ? 'Return to Dashboard →' : `Continue to Ch ${currentIdx + 2} →`;
+
+    // Build completed section links
+    type Link = { label: string; view: ViewMode; index?: number };
+    const links: Link[] = [];
+
+    if (completedPreReading.includes('pre-reading'))
+      links.push({ label: 'Orwell Dossier', view: 'pre-reading' });
+
+    PART1_SCENES.forEach((s, i) => {
+      if (completedScenes.includes(s.id))
+        links.push({ label: `Part 1 · Ch ${i + 1}`, view: 'scenes-part1', index: i });
+    });
+
+    if (doublethinkCompleted)
+      links.push({ label: 'Doublethink Challenge', view: 'doublethink-game' });
+
+    PART2_SCENES.forEach((s, i) => {
+      if (completedScenes.includes(s.id))
+        links.push({ label: `Part 2 · Ch ${i + 1}`, view: 'scenes-part2', index: i });
+    });
+
+    if (isPart1Complete)
+      links.push({ label: 'Newspeak Lexicon', view: 'newspeak-lexicon' });
+
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-start py-12 px-4 animate-fade-in">
+        {/* Stamp / celebration */}
+        <div className="text-center mb-10">
+          <div className="inline-block border-4 border-green-500 px-6 py-3 rotate-[-2deg] mb-6">
+            <span className="text-green-500 font-propaganda font-bold text-3xl uppercase tracking-widest">
+              Approved
+            </span>
+          </div>
+          <h2 className="text-2xl font-bold text-white font-mono uppercase tracking-wider mt-4">
+            {scenes[currentIdx]?.title} — Complete
+          </h2>
+          <p className="text-gray-400 font-terminal text-xs uppercase tracking-widest mt-2">
+            Your record has been updated. The Party is watching.
+          </p>
+        </div>
+
+        {/* Continue CTA */}
+        <button
+          onClick={handleHubContinue}
+          className="px-8 py-4 bg-party-red text-white font-bold font-propaganda uppercase tracking-widest text-base hover:bg-red-700 transition-colors mb-12 border-2 border-red-800"
+        >
+          {continueLabel}
+        </button>
+
+        {/* Jump-to section */}
+        {links.length > 0 && (
+          <div className="w-full max-w-2xl">
+            <p className="font-terminal text-[10px] uppercase tracking-widest text-gray-500 mb-4 text-center border-t border-gray-700 pt-6">
+              Or revisit a completed section
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {links.map(link => (
+                <button
+                  key={`${link.view}-${link.index ?? ''}`}
+                  onClick={() => handleHubNavigate(link.view, link.index)}
+                  className="px-3 py-2.5 border border-gray-700 font-terminal text-[11px] uppercase tracking-wider text-gray-300 hover:border-gray-400 hover:text-white transition-colors text-left"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderContent = () => {
     switch (viewMode) {
       case 'dashboard':
@@ -345,8 +447,8 @@ const StudentApp: React.FC<StudentAppProps> = ({ onReturnToDashboard }) => {
 
         <div className="flex flex-1 relative">
           <main className={`max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex-1 transition-all duration-300 ${chatbotIsOpen ? 'lg:mr-96' : ''}`}>
-            <div key={viewMode} className="animate-fade-in">
-              {renderContent()}
+            <div key={completionHub ? `hub-${completionHub.sceneId}` : viewMode} className="animate-fade-in">
+              {completionHub ? renderCompletionHub() : renderContent()}
             </div>
           </main>
 
